@@ -194,64 +194,25 @@ public class Day4Tests
                 2
             },
             {
-                PuzzleInputToSquareCharArray("""
-                                             MMMSXXMASM
-                                             MSAMXMSMSA
-                                             AMXSXMAAMM
-                                             MSAMASMSMX
-                                             XMASAMXAMM
-                                             XXAMMXXAMA
-                                             SMSMSASXSS
-                                             SAXAMASAAA
-                                             MAMMMXMMMM
-                                             MXMXAXMASX
-                                             """),
+                """
+                    MMMSXXMASM
+                    MSAMXMSMSA
+                    AMXSXMAAMM
+                    MSAMASMSMX
+                    XMASAMXAMM
+                    XXAMMXXAMA
+                    SMSMSASXSS
+                    SAXAMASAAA
+                    MAMMMXMMMM
+                    MXMXAXMASX
+                    """.ToTwoDimensionalArray(),
                 18
             },
             {
-                PuzzleInputToSquareCharArray(File.ReadAllText("Day4.txt")),
+                File.ReadAllText("Day4.txt").ToTwoDimensionalArray(),
                 2633
             }
         };
-
-    private static char[,] PuzzleInputToSquareCharArray(string input)
-    {
-        StringReader stringReader = new StringReader(input);
-
-        List<char[]> lines = new List<char[]>();
-
-        while (stringReader.Peek() > 0)
-        {
-            string? line = stringReader.ReadLine();
-
-            if (line != null)
-            {
-                lines.Add(line.ToCharArray());
-            }
-        }
-
-        int rowCount = ((IReadOnlyList<char[]>)lines).Count;
-        int columnCount = ((IReadOnlyList<char[]>)lines)[0].Length;
-
-        char[,] result = new char[rowCount, columnCount];
-
-        for (int row = 0; row < rowCount; row++)
-        {
-            var arrayAtRow = ((IReadOnlyList<char[]>)lines)[row];
-
-            if (arrayAtRow.Length != columnCount)
-            {
-                throw new ArgumentException("All arrays must be the same length");
-            }
-
-            for (int column = 0; column < columnCount; column++)
-            {
-                result[row, column] = arrayAtRow[column];
-            }
-        }
-
-        return result;
-    }
 
     [Theory]
     [MemberData(nameof(XmasData))]
@@ -312,22 +273,22 @@ public class Day4Tests
             1
         },
         {
-            PuzzleInputToSquareCharArray("""
-                                         MMMSXXMASM
-                                         MSAMXMSMSA
-                                         AMXSXMAAMM
-                                         MSAMASMSMX
-                                         XMASAMXAMM
-                                         XXAMMXXAMA
-                                         SMSMSASXSS
-                                         SAXAMASAAA
-                                         MAMMMXMMMM
-                                         MXMXAXMASX
-                                         """),
+            """
+                MMMSXXMASM
+                MSAMXMSMSA
+                AMXSXMAAMM
+                MSAMASMSMX
+                XMASAMXAMM
+                XXAMMXXAMA
+                SMSMSASXSS
+                SAXAMASAAA
+                MAMMMXMMMM
+                MXMXAXMASX
+                """.ToTwoDimensionalArray(),
             9
         },
         {
-            PuzzleInputToSquareCharArray(File.ReadAllText("Day4.txt")),
+            File.ReadAllText("Day4.txt").ToTwoDimensionalArray(),
             1936
         }
     };
