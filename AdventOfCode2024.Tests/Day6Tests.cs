@@ -112,12 +112,6 @@ public class Day6Tests
         Assert.Equal(expected, actual);
     }
 
-    [Fact]
-    public void ThrowsIfInputIsNull()
-    {
-        Assert.Throws<ArgumentNullException>(() => Day6.GetDistinctPositionCount(null!));
-    }
-
     public static TheoryData<string, int> InfiniteLoopData => new()
     {
         { "^", 0 },

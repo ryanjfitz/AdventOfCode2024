@@ -205,11 +205,11 @@ public class Day4Tests
                     SAXAMASAAA
                     MAMMMXMMMM
                     MXMXAXMASX
-                    """.ToTwoDimensionalArray(),
+                    """.ToTwoDimensionalCharArray(),
                 18
             },
             {
-                File.ReadAllText("Day4.txt").ToTwoDimensionalArray(),
+                File.ReadAllText("Day4.txt").ToTwoDimensionalCharArray(),
                 2633
             }
         };
@@ -284,11 +284,11 @@ public class Day4Tests
                 SAXAMASAAA
                 MAMMMXMMMM
                 MXMXAXMASX
-                """.ToTwoDimensionalArray(),
+                """.ToTwoDimensionalCharArray(),
             9
         },
         {
-            File.ReadAllText("Day4.txt").ToTwoDimensionalArray(),
+            File.ReadAllText("Day4.txt").ToTwoDimensionalCharArray(),
             1936
         }
     };
