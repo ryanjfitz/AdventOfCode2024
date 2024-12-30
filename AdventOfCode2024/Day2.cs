@@ -61,8 +61,20 @@ public static class Day2
         Descending
     }
 
-    public static int GetNumberOfSafeReports(IEnumerable<int[]> reports, bool useProblemDampener = false)
+    public static int GetNumberOfSafeReports(string input, bool useProblemDampener = false)
     {
+        var reports = ParseInput(input);
+        
         return reports.Count(report => IsSafe(report, useProblemDampener));
+    }
+    
+    private static IEnumerable<int[]> ParseInput(string input)
+    {
+        var lines = input.Split(Environment.NewLine);
+
+        foreach (var line in lines)
+        {
+            yield return line.Split(' ').Select(int.Parse).ToArray();
+        }
     }
 }
