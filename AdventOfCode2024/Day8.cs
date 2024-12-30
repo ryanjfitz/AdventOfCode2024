@@ -111,26 +111,20 @@ public static class Day8
                     Position diff = antennaPositionTwo - antennaPositionOne;
 
                     var antinodeCandidateOne = antennaPositionOne;
-                    do
+                    while (antinodeCandidateOne.IsWithinBounds(grid))
                     {
-                        if (antinodeCandidateOne.IsWithinBounds(grid))
-                        {
-                            antinodes.Add(antinodeCandidateOne);
-                        }
+                        antinodes.Add(antinodeCandidateOne);
 
                         antinodeCandidateOne -= diff;
-                    } while (antinodeCandidateOne.IsWithinBounds(grid));
+                    }
 
                     var antinodeCandidateTwo = antennaPositionTwo;
-                    do
+                    while (antinodeCandidateTwo.IsWithinBounds(grid))
                     {
-                        if (antinodeCandidateTwo.IsWithinBounds(grid))
-                        {
-                            antinodes.Add(antinodeCandidateTwo);
-                        }
+                        antinodes.Add(antinodeCandidateTwo);
 
                         antinodeCandidateTwo += diff;
-                    } while (antinodeCandidateTwo.IsWithinBounds(grid));
+                    }
                 }
             }
         }

@@ -41,4 +41,9 @@ public static class Extensions
         return GetPermutations(list, length - 1)
             .SelectMany(t => list.Where(e => !t.Contains(e)), (t1, t2) => t1.Concat([t2]));
     }
+
+    public static string[] ToStringArray(this string s)
+    {
+        return s.Select(c => c.ToString()).ToArray();
+    }
 }
