@@ -9,13 +9,13 @@ public static class Day9
         var checksum = CalculateChecksum(movedBlocks);
 
         return (
-            string.Join("", blocks),
-            string.Join("", movedBlocks),
+            string.Concat(blocks),
+            string.Concat(movedBlocks),
             checksum
         );
     }
 
-    private static string[] GetBlocks(string diskMap)
+    private static List<string> GetBlocks(string diskMap)
     {
         var result = new List<string>();
 
@@ -35,7 +35,7 @@ public static class Day9
             }
         }
 
-        return result.ToArray();
+        return result;
     }
 
     private static string[] MoveBlocks(string[] blocks)
@@ -80,15 +80,15 @@ public static class Day9
         var checksum = CalculateChecksum(movedFiles.SelectMany(x => x).ToArray());
 
         return (
-            string.Join("", files.SelectMany(x => x)),
-            string.Join("", movedFiles.SelectMany(x => x)),
+            string.Concat(files.SelectMany(x => x)),
+            string.Concat(movedFiles.SelectMany(x => x)),
             checksum
         );
     }
 
-    private static string[][] GetFiles(string diskMap)
+    private static List<string[]> GetFiles(string diskMap)
     {
-        var result = new List<List<string>>();
+        var result = new List<string[]>();
 
         int fileId = 0;
 
@@ -106,7 +106,7 @@ public static class Day9
             }
         }
 
-        return result.Select(r => r.ToArray()).ToArray();
+        return result;
     }
 
     private static List<string[]> MoveFiles(List<string[]> files)

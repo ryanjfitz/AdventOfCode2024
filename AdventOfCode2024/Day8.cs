@@ -75,25 +75,4 @@ public static class Day8
     }
 
     private record Antenna(char Frequency, IList<Position> Positions);
-
-    private record Position(int I, int J)
-    {
-        public static Position operator +(Position a, Position b)
-        {
-            return new Position(a.I + b.I, a.J + b.J);
-        }
-
-        public static Position operator -(Position a, Position b)
-        {
-            return new Position(a.I - b.I, a.J - b.J);
-        }
-
-        public bool IsWithinBounds(char[,] grid)
-        {
-            return I >= grid.GetLowerBound(0) &&
-                   J >= grid.GetLowerBound(1) &&
-                   I <= grid.GetUpperBound(0) &&
-                   J <= grid.GetUpperBound(1);
-        }
-    }
 }
