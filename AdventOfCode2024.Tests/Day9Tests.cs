@@ -30,21 +30,21 @@ public class Day9Tests
     [MemberData(nameof(MoveBlocksAndCalculateChecksumData))]
     public void MoveBlocksAndCalculateChecksum(
         string diskMap,
-        string expectedBlockRepresentation,
-        string expectedMovedBlockRepresentation,
+        string expectedBlocks,
+        string expectedMovedBlocks,
         long expectedChecksum)
     {
-        var (blockRepresentation, movedBlockRepresentation, checksum) = Day9.MoveBlocksAndCalculateChecksum(diskMap);
+        var result = Day9.MoveBlocksAndCalculateChecksum(diskMap);
 
         using (new AssertionScope())
         {
             if (diskMap != File.ReadAllText("Day9.txt"))
             {
-                blockRepresentation.Should().Be(expectedBlockRepresentation);
-                movedBlockRepresentation.Should().Be(expectedMovedBlockRepresentation);
+                result.Blocks.Should().Be(expectedBlocks);
+                result.MovedBlocks.Should().Be(expectedMovedBlocks);
             }
 
-            checksum.Should().Be(expectedChecksum);
+            result.Checksum.Should().Be(expectedChecksum);
         }
     }
 
@@ -63,21 +63,21 @@ public class Day9Tests
     [MemberData(nameof(MoveFilesAndCalculateChecksumData))]
     public void MoveFilesAndCalculateChecksum(
         string diskMap,
-        string expectedFileRepresentation,
-        string expectedMovedFileRepresentation,
+        string expectedFiles,
+        string expectedMovedFiles,
         long expectedChecksum)
     {
-        var (fileRepresentation, movedFileRepresentation, checksum) = Day9.MoveFilesAndCalculateChecksum(diskMap);
+        var result = Day9.MoveFilesAndCalculateChecksum(diskMap);
 
         using (new AssertionScope())
         {
             if (diskMap != File.ReadAllText("Day9.txt"))
             {
-                fileRepresentation.Should().Be(expectedFileRepresentation);
-                movedFileRepresentation.Should().Be(expectedMovedFileRepresentation);
+                result.Files.Should().Be(expectedFiles);
+                result.MovedFiles.Should().Be(expectedMovedFiles);
             }
 
-            checksum.Should().Be(expectedChecksum);
+            result.Checksum.Should().Be(expectedChecksum);
         }
     }
 }

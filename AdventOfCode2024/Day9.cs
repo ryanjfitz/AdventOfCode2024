@@ -2,17 +2,20 @@ namespace AdventOfCode2024;
 
 public static class Day9
 {
-    public static (string BlockRepresentation, string MovedBlockRepresentation, long Checksum)
-        MoveBlocksAndCalculateChecksum(string diskMap)
+    public static (string Blocks, string MovedBlocks, long Checksum) MoveBlocksAndCalculateChecksum(string diskMap)
     {
-        string[] blockRepresentation = GetBlockRepresentation(diskMap);
-        string[] movedBlocks = MoveBlocks(blockRepresentation.ToArray());
-        long checksum = CalculateChecksum(movedBlocks);
+        var blocks = GetBlocks(diskMap);
+        var movedBlocks = MoveBlocks(blocks.ToArray());
+        var checksum = CalculateChecksum(movedBlocks);
 
-        return (string.Join("", blockRepresentation), string.Join("", movedBlocks), checksum);
+        return (
+            string.Join("", blocks),
+            string.Join("", movedBlocks),
+            checksum
+        );
     }
 
-    private static string[] GetBlockRepresentation(string diskMap)
+    private static string[] GetBlocks(string diskMap)
     {
         var result = new List<string>();
 
@@ -35,22 +38,22 @@ public static class Day9
         return result.ToArray();
     }
 
-    private static string[] MoveBlocks(string[] blockRepresentation)
+    private static string[] MoveBlocks(string[] blocks)
     {
-        for (int i = blockRepresentation.Length - 1; i >= 0; i--)
+        for (int i = blocks.Length - 1; i >= 0; i--)
         {
-            int firstFreeSpaceIndex = Array.IndexOf(blockRepresentation, ".");
+            int firstFreeSpaceIndex = Array.IndexOf(blocks, ".");
 
             if (firstFreeSpaceIndex > i || firstFreeSpaceIndex == -1)
             {
                 break;
             }
 
-            blockRepresentation[firstFreeSpaceIndex] = blockRepresentation[i];
-            blockRepresentation[i] = ".";
+            blocks[firstFreeSpaceIndex] = blocks[i];
+            blocks[i] = ".";
         }
 
-        return blockRepresentation;
+        return blocks;
     }
 
     private static long CalculateChecksum(string[] blocks)
@@ -70,21 +73,20 @@ public static class Day9
         return result;
     }
 
-    public static (string FileRepresentation, string MovedFileRepresentation, long Checksum)
-        MoveFilesAndCalculateChecksum(string diskMap)
+    public static (string Files, string MovedFiles, long Checksum) MoveFilesAndCalculateChecksum(string diskMap)
     {
-        string[][] fileRepresentation = GetFileRepresentation(diskMap);
-        string[][] movedFiles = MoveFiles(fileRepresentation.Select(x => x.ToArray()).ToArray());
-        long checksum = CalculateChecksum(movedFiles.SelectMany(x => x).ToArray());
+        var files = GetFiles(diskMap);
+        var movedFiles = MoveFiles(files.Select(x => x.ToArray()).ToList());
+        var checksum = CalculateChecksum(movedFiles.SelectMany(x => x).ToArray());
 
         return (
-            string.Join("", fileRepresentation.SelectMany(x => x)),
+            string.Join("", files.SelectMany(x => x)),
             string.Join("", movedFiles.SelectMany(x => x)),
             checksum
         );
     }
 
-    private static string[][] GetFileRepresentation(string diskMap)
+    private static string[][] GetFiles(string diskMap)
     {
         var result = new List<List<string>>();
 
@@ -107,51 +109,49 @@ public static class Day9
         return result.Select(r => r.ToArray()).ToArray();
     }
 
-    private static string[][] MoveFiles(string[][] fileRepresentation)
+    private static List<string[]> MoveFiles(List<string[]> files)
     {
-        for (int i = fileRepresentation.Length - 1; i >= 0; i--)
+        for (int i = files.Count - 1; i >= 0; i--)
         {
-            var file = fileRepresentation[i];
+            string[] file = files[i];
 
             if (IsFreeSpace(file))
             {
                 continue;
             }
 
-            var freeSpace = fileRepresentation.FirstOrDefault(f => IsFreeSpace(f) && f.Length >= file.Length);
+            string[]? freeSpace = files.FirstOrDefault(f => IsFreeSpace(f) && f.Length >= file.Length);
 
             if (freeSpace == null)
             {
                 continue;
             }
 
-            int freeSpaceIndex = Array.IndexOf(fileRepresentation, freeSpace);
+            int freeSpaceIndex = files.IndexOf(freeSpace);
+
             if (freeSpaceIndex > i)
             {
                 continue;
             }
 
-            string[] freeSpaceCopy = new string[freeSpace.Length];
-            Array.Copy(freeSpace, freeSpaceCopy, freeSpace.Length);
-
+            // Swap file and free space.
+            string[] temp = freeSpace.ToArray();
             Array.Copy(file, freeSpace, file.Length);
+            Array.Copy(temp, file, file.Length);
 
-            int dotIndex = Array.IndexOf(freeSpace, ".");
-            var left = freeSpace.Take(dotIndex).ToArray();
-            var right = freeSpace.Skip(dotIndex).ToArray();
-            Array.Copy(freeSpaceCopy, file, file.Length);
-
-            if (left.Length > 0)
+            // The file is in a new spot and might now have free space at the end. Split it off if so.
+            int freeSpaceWithinFileIndex = Array.IndexOf(freeSpace, ".");
+            if (freeSpaceWithinFileIndex != -1)
             {
-                var x = fileRepresentation.ToList();
-                x[freeSpaceIndex] = left;
-                x.Insert(freeSpaceIndex + 1, right);
+                string[] fileOnly = freeSpace.Take(freeSpaceWithinFileIndex).ToArray();
+                string[] extraFreeSpace = freeSpace.Skip(freeSpaceWithinFileIndex).ToArray();
+                files[freeSpaceIndex] = fileOnly;
+                files.Insert(freeSpaceIndex + 1, extraFreeSpace);
                 i += 1;
-                fileRepresentation = x.ToArray();
             }
         }
 
-        return fileRepresentation;
+        return files;
     }
 
     private static bool IsFreeSpace(string[] file)
