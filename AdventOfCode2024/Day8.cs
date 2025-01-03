@@ -10,7 +10,7 @@ public static class Day8
 
         var antennas = GetAntennas(grid);
 
-        var antinodes = part2 ? GetAntinodesPart2(grid, antennas) : GetAntinodes(grid, antennas);
+        var antinodes = GetAntinodes(grid, antennas, part2);
 
         return antinodes.Count();
     }
@@ -35,7 +35,7 @@ public static class Day8
         return antennas.Values;
     }
 
-    private static IEnumerable<Position> GetAntinodes(char[,] grid, IEnumerable<Antenna> antennas)
+    private static IEnumerable<Position> GetAntinodes(char[,] grid, IEnumerable<Antenna> antennas, bool part2 = false)
     {
         HashSet<Position> antinodes = [];
 
@@ -47,23 +47,25 @@ public static class Day8
                 {
                     Position antennaPositionOne = antennaPositions[i];
                     Position antennaPositionTwo = antennaPositions[i + 1];
-
                     Position diff = antennaPositionTwo - antennaPositionOne;
 
-                    var antinodeCandidateOne = antennaPositionOne - diff;
-                    if (antinodeCandidateOne != antennaPositionOne &&
-                        antinodeCandidateOne != antennaPositionTwo &&
-                        antinodeCandidateOne.IsWithinBounds(grid))
+                    if (part2)
                     {
-                        antinodes.Add(antinodeCandidateOne);
-                    }
+                        Position antinode = antennaPositionOne;
+                        while (antinode.IsWithinBounds(grid))
+                        {
+                            antinodes.Add(antinode);
 
-                    var antinodeCandidateTwo = antennaPositionTwo + diff;
-                    if (antinodeCandidateTwo != antennaPositionOne &&
-                        antinodeCandidateTwo != antennaPositionTwo &&
-                        antinodeCandidateTwo.IsWithinBounds(grid))
+                            antinode -= diff;
+                        }
+                    }
+                    else
                     {
-                        antinodes.Add(antinodeCandidateTwo);
+                        Position antinode = antennaPositionOne - diff;
+                        if (antinode.IsWithinBounds(grid))
+                        {
+                            antinodes.Add(antinode);
+                        }
                     }
                 }
             }
@@ -93,42 +95,5 @@ public static class Day8
                    I <= grid.GetUpperBound(0) &&
                    J <= grid.GetUpperBound(1);
         }
-    }
-
-    private static IEnumerable<Position> GetAntinodesPart2(char[,] grid, IEnumerable<Antenna> antennas)
-    {
-        HashSet<Position> antinodes = [];
-
-        foreach (var antenna in antennas)
-        {
-            foreach (var antennaPositions in antenna.Positions.GetPermutations().Select(p => p.ToArray()))
-            {
-                for (int i = 0; i < antennaPositions.Length - 1; i++)
-                {
-                    Position antennaPositionOne = antennaPositions[i];
-                    Position antennaPositionTwo = antennaPositions[i + 1];
-
-                    Position diff = antennaPositionTwo - antennaPositionOne;
-
-                    var antinodeCandidateOne = antennaPositionOne;
-                    while (antinodeCandidateOne.IsWithinBounds(grid))
-                    {
-                        antinodes.Add(antinodeCandidateOne);
-
-                        antinodeCandidateOne -= diff;
-                    }
-
-                    var antinodeCandidateTwo = antennaPositionTwo;
-                    while (antinodeCandidateTwo.IsWithinBounds(grid))
-                    {
-                        antinodes.Add(antinodeCandidateTwo);
-
-                        antinodeCandidateTwo += diff;
-                    }
-                }
-            }
-        }
-
-        return antinodes;
     }
 }
