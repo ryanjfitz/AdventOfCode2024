@@ -1,10 +1,10 @@
-using Microsoft.Extensions.Caching.Memory;
+using System.Collections.Concurrent;
 
 namespace AdventOfCode2024;
 
 public static class Day7
 {
-    private static readonly MemoryCache MemoryCache = new(new MemoryCacheOptions());
+    private static readonly ConcurrentDictionary<string, string[][]> Cache = new();
 
     public static long GetTotalCalibrationResult(string input, bool allowConcatenation = false)
     {
@@ -32,7 +32,7 @@ public static class Day7
 
     private static string[][] GetOperatorCombinations(bool allowConcatenation, int combinationLength)
     {
-        return MemoryCache.GetOrCreate($"{nameof(GetOperatorCombinations)}{allowConcatenation}{combinationLength}", _ =>
+        return Cache.GetOrAdd($"{allowConcatenation}{combinationLength}", _ =>
         {
             List<string> operators = ["+", "*"];
             if (allowConcatenation)
@@ -59,7 +59,7 @@ public static class Day7
             }
 
             return combinations;
-        })!;
+        });
     }
 
     private static long DoMath(long[] numbers, IEnumerable<string> operators)
