@@ -1,6 +1,3 @@
-using FluentAssertions;
-using FluentAssertions.Execution;
-
 namespace AdventOfCode2024.Tests;
 
 public class Day9Tests
@@ -36,16 +33,13 @@ public class Day9Tests
     {
         var result = Day9.MoveBlocksAndCalculateChecksum(diskMap);
 
-        using (new AssertionScope())
+        if (diskMap != File.ReadAllText("Day9.txt"))
         {
-            if (diskMap != File.ReadAllText("Day9.txt"))
-            {
-                result.Blocks.Should().Be(expectedBlocks);
-                result.MovedBlocks.Should().Be(expectedMovedBlocks);
-            }
-
-            result.Checksum.Should().Be(expectedChecksum);
+            Assert.Equal(expectedBlocks, result.Blocks);
+            Assert.Equal(expectedMovedBlocks, result.MovedBlocks);
         }
+
+        Assert.Equal(expectedChecksum, result.Checksum);
     }
 
     public static TheoryData<string, string, string, long> MoveFilesAndCalculateChecksumData => new()
@@ -69,15 +63,12 @@ public class Day9Tests
     {
         var result = Day9.MoveFilesAndCalculateChecksum(diskMap);
 
-        using (new AssertionScope())
+        if (diskMap != File.ReadAllText("Day9.txt"))
         {
-            if (diskMap != File.ReadAllText("Day9.txt"))
-            {
-                result.Files.Should().Be(expectedFiles);
-                result.MovedFiles.Should().Be(expectedMovedFiles);
-            }
-
-            result.Checksum.Should().Be(expectedChecksum);
+            Assert.Equal(expectedFiles, result.Files);
+            Assert.Equal(expectedMovedFiles, result.MovedFiles);
         }
+
+        Assert.Equal(expectedChecksum, result.Checksum);
     }
 }

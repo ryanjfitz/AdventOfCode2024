@@ -2,47 +2,36 @@ namespace AdventOfCode2024;
 
 public static class Extensions
 {
-    public static IReadOnlyList<T> RemoveAt<T>(this IEnumerable<T> enumerable, int i)
+    public static T[] RemoveAt<T>(this T[] array, int i)
     {
-        var list = enumerable.ToList();
-        list.RemoveAt(i);
-        return list;
+        return array.Where((_, index) => index != i).ToArray();
     }
 
-    public static char[,] ToTwoDimensionalCharArray(this string input)
+    public static T[,] ToTwoDimensionalArray<T>(this string input)
     {
         string[] lines = input.Split(Environment.NewLine);
 
         int rowCount = lines.Length;
         int columnCount = lines[0].Length;
 
-        char[,] result = new char[rowCount, columnCount];
+        T[,] result = new T[rowCount, columnCount];
 
         for (int row = 0; row < rowCount; row++)
         {
             for (int column = 0; column < columnCount; column++)
             {
-                result[row, column] = lines[row][column];
-            }
-        }
+                object value = null!;
 
-        return result;
-    }
+                if (typeof(T) == typeof(char))
+                {
+                    value = lines[row][column];
+                }
+                else if (typeof(T) == typeof(int))
+                {
+                    value = (int)char.GetNumericValue(lines[row][column]);
+                }
 
-    public static int[,] ToTwoDimensionalIntArray(this string input)
-    {
-        string[] lines = input.Split(Environment.NewLine);
-
-        int rowCount = lines.Length;
-        int columnCount = lines[0].Length;
-
-        int[,] result = new int[rowCount, columnCount];
-
-        for (int row = 0; row < rowCount; row++)
-        {
-            for (int column = 0; column < columnCount; column++)
-            {
-                result[row, column] = (int)char.GetNumericValue(lines[row][column]);
+                result[row, column] = (T)value;
             }
         }
 

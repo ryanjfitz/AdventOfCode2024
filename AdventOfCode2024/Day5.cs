@@ -4,62 +4,83 @@ public static class Day5
 {
     public static bool IsUpdateInOrder(string rules, string update)
     {
-        var ruleList = rules.Split('\n').Select(rule => rule.Split('|').Select(int.Parse).ToArray()).ToArray();
+        var (parsedRules, parsedUpdates) = ParseInput(rules + Environment.NewLine + update);
 
-        var pageList = update.Split(",").Select(int.Parse).ToArray();
+        return IsUpdateInOrder(parsedRules, parsedUpdates[0]);
+    }
 
-        foreach (var rule in ruleList)
+    private static bool IsUpdateInOrder(int[][] rules, int[] update)
+    {
+        return CheckUpdateOrder(rules, update, () => true, (_, _) => false);
+    }
+
+    private static T CheckUpdateOrder<T>(
+        int[][] rules,
+        int[] update,
+        Func<T> inOrderFunc,
+        Func<int, int, T> outOfOrderFunc)
+    {
+        foreach (var rule in rules)
         {
-            int leftRuleIndex = Array.IndexOf(pageList, rule[0]);
-            int rightRuleIndex = Array.IndexOf(pageList, rule[1]);
+            int leftRuleIndex = Array.IndexOf(update, rule[0]);
+            int rightRuleIndex = Array.IndexOf(update, rule[1]);
 
             if (leftRuleIndex >= 0 && rightRuleIndex >= 0 && leftRuleIndex >= rightRuleIndex)
             {
-                return false;
+                return outOfOrderFunc(leftRuleIndex, rightRuleIndex);
             }
         }
 
-        return true;
+        return inOrderFunc();
     }
 
-    public static int SumOfMiddlePageNumbersFromCorrectlyOrderedUpdates(string rules, string updates)
+    public static int SumOfMiddlePageNumbersFromCorrectlyOrderedUpdates(string input)
     {
-        var orderedUpdates = updates.Split('\n').Where(update => IsUpdateInOrder(rules, update));
+        var (rules, updates) = ParseInput(input);
 
-        var pagesOfOrderedUpdates = orderedUpdates.Select(p => p.Split(',').Select(int.Parse).ToArray());
-
-        return pagesOfOrderedUpdates.Sum(p => p[p.Length / 2]);
+        return updates
+            .Where(update => IsUpdateInOrder(rules, update))
+            .Sum(update => update[update.Length / 2]);
     }
 
-    public static int SumOfMiddlePageNumbersFromCorrectedUpdates(string rules, string updates)
+    public static int SumOfMiddlePageNumbersFromCorrectedUpdates(string input)
     {
-        var ruleList = rules.Split('\n').Select(rule => rule.Split('|').Select(int.Parse).ToArray()).ToArray();
+        var (rules, updates) = ParseInput(input);
 
-        var updateList = updates.Split("\n");
+        return updates
+            .Where(update => !IsUpdateInOrder(rules, update))
+            .Select(update => FixUpdateOrder(rules, update))
+            .Sum(update => update[update.Length / 2]);
+    }
 
-        HashSet<int[]> correctedUpdates = new HashSet<int[]>();
-
-        foreach (string update in updateList)
+    private static int[] FixUpdateOrder(int[][] rules, int[] update)
+    {
+        return CheckUpdateOrder(rules, update, () => update, (leftRuleIndex, rightRuleIndex) =>
         {
-            var pageList = update.Split(",").Select(int.Parse).ToArray();
+            (update[leftRuleIndex], update[rightRuleIndex]) = (update[rightRuleIndex], update[leftRuleIndex]);
+            return FixUpdateOrder(rules, update);
+        });
+    }
 
-            for (var i = 0; i < ruleList.Length; i++)
+    private static (int[][] Rules, int[][] Updates) ParseInput(string input)
+    {
+        var lines = input.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+
+        var rules = new List<int[]>();
+        var updates = new List<int[]>();
+
+        foreach (var line in lines)
+        {
+            if (line.Contains('|'))
             {
-                var rule = ruleList[i];
-                int leftRuleIndex = Array.IndexOf(pageList, rule[0]);
-                int rightRuleIndex = Array.IndexOf(pageList, rule[1]);
-
-                if (leftRuleIndex >= 0 && rightRuleIndex >= 0 && leftRuleIndex >= rightRuleIndex)
-                {
-                    int temp = pageList[leftRuleIndex];
-                    pageList[leftRuleIndex] = pageList[rightRuleIndex];
-                    pageList[rightRuleIndex] = temp;
-                    correctedUpdates.Add(pageList);
-                    i = 0;
-                }
+                rules.Add(line.Split('|').Select(int.Parse).ToArray());
+            }
+            else if (line.Contains(','))
+            {
+                updates.Add(line.Split(',').Select(int.Parse).ToArray());
             }
         }
 
-        return correctedUpdates.Sum(p => p[p.Length / 2]);
+        return (rules.ToArray(), updates.ToArray());
     }
 }

@@ -16,7 +16,7 @@ public static class Day10
 
     private static ConcurrentDictionary<Position, List<Position>> GetReachablePeaks(string input)
     {
-        var grid = input.ToTwoDimensionalIntArray();
+        var grid = input.ToTwoDimensionalArray<int>();
 
         var reachablePeaks = new ConcurrentDictionary<Position, List<Position>>();
 

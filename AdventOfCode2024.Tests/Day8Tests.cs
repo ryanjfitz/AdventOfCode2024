@@ -176,9 +176,7 @@ public class Day8Tests
     [MemberData(nameof(Data))]
     public void GetAntinodeCount(string input, int expected)
     {
-        int actual = Day8.GetAntinodeCount(input);
-
-        Assert.Equal(expected, actual);
+        Assert.Equal(expected, Day8.GetAntinodeCount(input));
     }
 
     public static TheoryData<string, int> DataPart2 => new()
@@ -368,8 +366,6 @@ public class Day8Tests
     [MemberData(nameof(DataPart2))]
     public void GetAntinodeCountPart2(string input, int expected)
     {
-        int actual = Day8.GetAntinodeCount(input, part2: true);
-
-        Assert.Equal(expected, actual);
+        Assert.Equal(expected, Day8.GetAntinodeCount(input, part2: true));
     }
 }

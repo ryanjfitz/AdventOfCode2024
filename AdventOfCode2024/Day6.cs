@@ -4,7 +4,7 @@ public static class Day6
 {
     public static int GetDistinctPositionCount(string input)
     {
-        var grid = input.ToTwoDimensionalCharArray();
+        var grid = input.ToTwoDimensionalArray<char>();
 
         var currentPosition = GetStartPosition(grid);
 
@@ -113,7 +113,7 @@ public static class Day6
 
     public static int GetInfiniteLoopObstructionCount(string input)
     {
-        var grid = input.ToTwoDimensionalCharArray();
+        var grid = input.ToTwoDimensionalArray<char>();
 
         var startPosition = GetStartPosition(grid);
 

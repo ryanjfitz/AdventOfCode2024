@@ -22,9 +22,7 @@ public class Day2Tests
     [InlineData(new[] { 8, 6, 4, 4, 1 }, false)]
     public void IsSafe(int[] report, bool expected)
     {
-        bool actual = Day2.IsSafe(report);
-
-        Assert.Equal(expected, actual);
+        Assert.Equal(expected, Day2.IsSafe(report));
     }
 
     public static TheoryData<string, int> GetNumberOfSafeReportsData =>
@@ -69,9 +67,7 @@ public class Day2Tests
     [MemberData(nameof(GetNumberOfSafeReportsData))]
     public void GetNumberOfSafeReports(string input, int expected)
     {
-        int actual = Day2.GetNumberOfSafeReports(input);
-
-        Assert.Equal(expected, actual);
+        Assert.Equal(expected, Day2.GetNumberOfSafeReports(input));
     }
 
     [Theory]
@@ -92,9 +88,7 @@ public class Day2Tests
     [InlineData(new[] { 8, 6, 4, 4, 1 }, true)]
     public void IsSafeWithProblemDampener(int[] report, bool expected)
     {
-        bool actual = Day2.IsSafe(report, useProblemDampener: true);
-
-        Assert.Equal(expected, actual);
+        Assert.Equal(expected, Day2.IsSafe(report, useProblemDampener: true));
     }
 
     public static TheoryData<string, int> GetNumberOfSafeReportsWithProblemDampenerData =>
@@ -139,8 +133,6 @@ public class Day2Tests
     [MemberData(nameof(GetNumberOfSafeReportsWithProblemDampenerData))]
     public void GetNumberOfSafeReportsWithProblemDampener(string input, int expected)
     {
-        int actual = Day2.GetNumberOfSafeReports(input, useProblemDampener: true);
-
-        Assert.Equal(expected, actual);
+        Assert.Equal(expected, Day2.GetNumberOfSafeReports(input, useProblemDampener: true));
     }
 }

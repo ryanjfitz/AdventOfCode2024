@@ -1,6 +1,6 @@
 namespace AdventOfCode2024;
 
-public class Day11
+public static class Day11
 {
     public static long[] Blink(string input)
     {

@@ -40,9 +40,7 @@ public class Day7Tests
     [MemberData(nameof(Data))]
     public void GetTotalCalibrationResult(string input, long expected)
     {
-        long actual = Day7.GetTotalCalibrationResult(input);
-
-        Assert.Equal(expected, actual);
+        Assert.Equal(expected, Day7.GetTotalCalibrationResult(input));
     }
 
     public static TheoryData<string, long> ConcatenatedData =>
@@ -72,8 +70,6 @@ public class Day7Tests
     [MemberData(nameof(ConcatenatedData))]
     public void GetTotalConcatenatedCalibrationResult(string input, long expected)
     {
-        long actual = Day7.GetTotalCalibrationResult(input, allowConcatenation: true);
-
-        Assert.Equal(expected, actual);
+        Assert.Equal(expected, Day7.GetTotalCalibrationResult(input, allowConcatenation: true));
     }
 }

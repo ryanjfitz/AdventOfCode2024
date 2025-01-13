@@ -107,9 +107,7 @@ public class Day6Tests
     [MemberData(nameof(Data))]
     public void GetDistinctPositionCount(string input, int expected)
     {
-        int actual = Day6.GetDistinctPositionCount(input);
-
-        Assert.Equal(expected, actual);
+        Assert.Equal(expected, Day6.GetDistinctPositionCount(input));
     }
 
     public static TheoryData<string, int> InfiniteLoopData => new()
@@ -147,9 +145,7 @@ public class Day6Tests
     [MemberData(nameof(InfiniteLoopData))]
     public void GetInfiniteLoopObstructionCount(string input, int expected)
     {
-        int actual = Day6.GetInfiniteLoopObstructionCount(input);
-
-        Assert.Equal(expected, actual);
+        Assert.Equal(expected, Day6.GetInfiniteLoopObstructionCount(input));
     }
 
     [Theory]

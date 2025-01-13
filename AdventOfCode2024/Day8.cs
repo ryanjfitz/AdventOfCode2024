@@ -6,7 +6,7 @@ public static class Day8
 {
     public static int GetAntinodeCount(string input, bool part2 = false)
     {
-        var grid = input.ToTwoDimensionalCharArray();
+        var grid = input.ToTwoDimensionalArray<char>();
 
         var antennas = GetAntennas(grid);
 

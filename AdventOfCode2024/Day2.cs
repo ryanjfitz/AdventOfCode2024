@@ -2,11 +2,11 @@ namespace AdventOfCode2024;
 
 public static class Day2
 {
-    public static bool IsSafe(IReadOnlyList<int> report, bool useProblemDampener = false)
+    public static bool IsSafe(int[] report, bool useProblemDampener = false)
     {
         Direction? lastDirection = null;
 
-        for (int level = 0; level < report.Count - 1; level++)
+        for (int level = 0; level < report.Length - 1; level++)
         {
             int diff = report[level] - report[level + 1];
 
@@ -48,7 +48,7 @@ public static class Day2
         return true;
     }
 
-    private static bool IsSafeWithoutLevel(IReadOnlyList<int> report, int level)
+    private static bool IsSafeWithoutLevel(int[] report, int level)
     {
         return level >= 0 && IsSafe(report.RemoveAt(level), useProblemDampener: false) ||
                level + 1 >= 0 && IsSafe(report.RemoveAt(level + 1), useProblemDampener: false) ||

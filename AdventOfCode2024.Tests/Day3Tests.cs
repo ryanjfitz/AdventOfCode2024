@@ -21,9 +21,7 @@ public class Day3Tests
     [MemberData(nameof(SumMultiplicationsData))]
     public void SumMultiplications(string input, int expected)
     {
-        int actual = Day3.SumMultiplications(input);
-
-        Assert.Equal(expected, actual);
+        Assert.Equal(expected, Day3.SumMultiplications(input));
     }
 
     public static TheoryData<string, int> SumMultiplicationsWithInstructionsData =>
@@ -37,8 +35,6 @@ public class Day3Tests
     [MemberData(nameof(SumMultiplicationsWithInstructionsData))]
     public void SumMultiplicationsWithInstructions(string input, int expected)
     {
-        int actual = Day3.SumMultiplicationsWithInstructions(input);
-
-        Assert.Equal(expected, actual);
+        Assert.Equal(expected, Day3.SumMultiplicationsWithInstructions(input));
     }
 }

@@ -2,7 +2,7 @@ namespace AdventOfCode2024.Tests;
 
 public class Day1Tests
 {
-    public static TheoryData<string, int> Part1Data =>
+    public static TheoryData<string, int> GetTotalDistanceData =>
         new()
         {
             {
@@ -62,15 +62,13 @@ public class Day1Tests
         };
 
     [Theory]
-    [MemberData(nameof(Part1Data))]
-    public void Part1(string input, int expectedTotalDistance)
+    [MemberData(nameof(GetTotalDistanceData))]
+    public void Part1(string input, int expected)
     {
-        int actualTotalDistance = Day1.GetTotalDistance(input);
-
-        Assert.Equal(expectedTotalDistance, actualTotalDistance);
+        Assert.Equal(expected, Day1.GetTotalDistance(input));
     }
 
-    public static TheoryData<string, int> Part2Data =>
+    public static TheoryData<string, int> GetSimilarityScoreData =>
         new()
         {
             {
@@ -96,11 +94,9 @@ public class Day1Tests
         };
 
     [Theory]
-    [MemberData(nameof(Part2Data))]
-    public void Part2(string input, int expectedSimilarityScore)
+    [MemberData(nameof(GetSimilarityScoreData))]
+    public void Part2(string input, int expected)
     {
-        int actualSimilarityScore = Day1.GetSimilarityScore(input);
-
-        Assert.Equal(expectedSimilarityScore, actualSimilarityScore);
+        Assert.Equal(expected, Day1.GetSimilarityScore(input));
     }
 }
