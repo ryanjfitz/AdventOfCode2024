@@ -2,191 +2,167 @@ namespace AdventOfCode2024.Tests;
 
 public class Day5Tests
 {
-    public static TheoryData<string, string, bool> IsUpdateInOrderData => new()
+    public static IEnumerable<(string, string, bool)> GetIsUpdateInOrderData()
     {
-        { "1|2", "1,2", true },
-        { "1|2", "2,1", false },
-        { "1|2\n2|3", "1,2,3", true },
-        { "1|2\n2|3", "2,1,3", false },
-        { "2|3\n1|2", "1,2,3", true },
-        { "1|2\n2|3\n3|4", "1,2,3", true },
-        {
+        yield return ("1|2", "1,2", true);
+        yield return ("1|2", "2,1", false);
+        yield return ("1|2\n2|3", "1,2,3", true);
+        yield return ("1|2\n2|3", "2,1,3", false);
+        yield return ("2|3\n1|2", "1,2,3", true);
+        yield return ("1|2\n2|3\n3|4", "1,2,3", true);
+        yield return (
             "47|53\n97|13\n97|61\n97|47\n75|29\n61|13\n75|53\n29|13\n97|29\n53|29\n61|53\n97|53\n61|29\n47|13\n75|47\n97|75\n47|61\n75|61\n47|29\n75|13\n53|13",
-            "75,47,61,53,29",
-            true
-        },
-        {
+            "75,47,61,53,29", true);
+        yield return (
             "47|53\n97|13\n97|61\n97|47\n75|29\n61|13\n75|53\n29|13\n97|29\n53|29\n61|53\n97|53\n61|29\n47|13\n75|47\n97|75\n47|61\n75|61\n47|29\n75|13\n53|13",
-            "97,61,53,29,13",
-            true
-        },
-        {
+            "97,61,53,29,13", true);
+        yield return (
             "47|53\n97|13\n97|61\n97|47\n75|29\n61|13\n75|53\n29|13\n97|29\n53|29\n61|53\n97|53\n61|29\n47|13\n75|47\n97|75\n47|61\n75|61\n47|29\n75|13\n53|13",
-            "75,29,13",
-            true
-        },
-        {
+            "75,29,13", true);
+        yield return (
             "47|53\n97|13\n97|61\n97|47\n75|29\n61|13\n75|53\n29|13\n97|29\n53|29\n61|53\n97|53\n61|29\n47|13\n75|47\n97|75\n47|61\n75|61\n47|29\n75|13\n53|13",
-            "75,97,47,61,53",
-            false
-        },
-        {
+            "75,97,47,61,53", false);
+        yield return (
             "47|53\n97|13\n97|61\n97|47\n75|29\n61|13\n75|53\n29|13\n97|29\n53|29\n61|53\n97|53\n61|29\n47|13\n75|47\n97|75\n47|61\n75|61\n47|29\n75|13\n53|13",
-            "61,13,29",
-            false
-        },
-        {
+            "61,13,29", false);
+        yield return (
             "47|53\n97|13\n97|61\n97|47\n75|29\n61|13\n75|53\n29|13\n97|29\n53|29\n61|53\n97|53\n61|29\n47|13\n75|47\n97|75\n47|61\n75|61\n47|29\n75|13\n53|13",
-            "97,13,75,29,47",
-            false
-        }
-    };
-
-    [Theory]
-    [MemberData(nameof(IsUpdateInOrderData))]
-    public void IsUpdateInOrder(string rules, string update, bool expected)
-    {
-        Assert.Equal(expected, Day5.IsUpdateInOrder(rules, update));
+            "97,13,75,29,47", false);
     }
 
-    public static TheoryData<string, int> SumOfMiddlePageNumbersFromCorrectlyOrderedPagesData => new()
+    [Test]
+    [MethodDataSource(nameof(GetIsUpdateInOrderData))]
+    public async Task IsUpdateInOrder(string rules, string update, bool expected)
     {
-        {
-            """
-            47|53
-            97|13
-            97|61
-            97|47
-            75|29
-            61|13
-            75|53
-            29|13
-            97|29
-            53|29
-            61|53
-            97|53
-            61|29
-            47|13
-            75|47
-            97|75
-            47|61
-            75|61
-            47|29
-            75|13
-            53|13
-
-            75,47,61,53,29
-            97,61,53,29,13
-            75,29,13
-            75,97,47,61,53
-            61,13,29
-            97,13,75,29,47
-            """,
-            143
-        },
-        { File.ReadAllText("Day5.txt"), 6505 }
-    };
-
-    [Theory]
-    [MemberData(nameof(SumOfMiddlePageNumbersFromCorrectlyOrderedPagesData))]
-    public void SumOfMiddlePageNumbersFromCorrectlyOrderedPages(string input, int expected)
-    {
-        Assert.Equal(expected, Day5.SumOfMiddlePageNumbersFromCorrectlyOrderedUpdates(input));
+        await Assert.That(Day5.IsUpdateInOrder(rules, update)).IsEqualTo(expected);
     }
 
-    public static TheoryData<string, int> SumOfMiddlePageNumbersFromCorrectedUpdatesData => new()
+    public static IEnumerable<(string, int)> GetSumOfMiddlePageNumbersFromCorrectlyOrderedPagesData()
     {
-        {
-            """
-            47|53
-            97|13
-            97|61
-            97|47
-            75|29
-            61|13
-            75|53
-            29|13
-            97|29
-            53|29
-            61|53
-            97|53
-            61|29
-            47|13
-            75|47
-            97|75
-            47|61
-            75|61
-            47|29
-            75|13
-            53|13
+        yield return ("""
+                      47|53
+                      97|13
+                      97|61
+                      97|47
+                      75|29
+                      61|13
+                      75|53
+                      29|13
+                      97|29
+                      53|29
+                      61|53
+                      97|53
+                      61|29
+                      47|13
+                      75|47
+                      97|75
+                      47|61
+                      75|61
+                      47|29
+                      75|13
+                      53|13
 
-            75,97,47,61,53
-            """,
-            47
-        },
-        {
-            """
-            47|53
-            97|13
-            97|61
-            97|47
-            75|29
-            61|13
-            75|53
-            29|13
-            97|29
-            53|29
-            61|53
-            97|53
-            61|29
-            47|13
-            75|47
-            97|75
-            47|61
-            75|61
-            47|29
-            75|13
-            53|13
+                      75,47,61,53,29
+                      97,61,53,29,13
+                      75,29,13
+                      75,97,47,61,53
+                      61,13,29
+                      97,13,75,29,47
+                      """, 143);
+        yield return (File.ReadAllText("Day5.txt"), 6505);
+    }
 
-            61,13,29
-            """,
-            29
-        },
-        {
-            """
-            47|53
-            97|13
-            97|61
-            97|47
-            75|29
-            61|13
-            75|53
-            29|13
-            97|29
-            53|29
-            61|53
-            97|53
-            61|29
-            47|13
-            75|47
-            97|75
-            47|61
-            75|61
-            47|29
-            75|13
-            53|13
-
-            97,13,75,29,47
-            """,
-            47
-        },
-        { File.ReadAllText("Day5.txt"), 6897 }
-    };
-
-    [Theory]
-    [MemberData(nameof(SumOfMiddlePageNumbersFromCorrectedUpdatesData))]
-    public void SumOfMiddlePageNumbersFromCorrectedUpdates(string input, int expected)
+    [Test]
+    [MethodDataSource(nameof(GetSumOfMiddlePageNumbersFromCorrectlyOrderedPagesData))]
+    public async Task SumOfMiddlePageNumbersFromCorrectlyOrderedPages(string input, int expected)
     {
-        Assert.Equal(expected, Day5.SumOfMiddlePageNumbersFromCorrectedUpdates(input));
+        await Assert.That(Day5.SumOfMiddlePageNumbersFromCorrectlyOrderedUpdates(input)).IsEqualTo(expected);
+    }
+
+    public static IEnumerable<(string, int)> GetSumOfMiddlePageNumbersFromCorrectedUpdatesData()
+    {
+        yield return ("""
+                      47|53
+                      97|13
+                      97|61
+                      97|47
+                      75|29
+                      61|13
+                      75|53
+                      29|13
+                      97|29
+                      53|29
+                      61|53
+                      97|53
+                      61|29
+                      47|13
+                      75|47
+                      97|75
+                      47|61
+                      75|61
+                      47|29
+                      75|13
+                      53|13
+
+                      75,97,47,61,53
+                      """, 47);
+        yield return ("""
+                      47|53
+                      97|13
+                      97|61
+                      97|47
+                      75|29
+                      61|13
+                      75|53
+                      29|13
+                      97|29
+                      53|29
+                      61|53
+                      97|53
+                      61|29
+                      47|13
+                      75|47
+                      97|75
+                      47|61
+                      75|61
+                      47|29
+                      75|13
+                      53|13
+
+                      61,13,29
+                      """, 29);
+        yield return ("""
+                      47|53
+                      97|13
+                      97|61
+                      97|47
+                      75|29
+                      61|13
+                      75|53
+                      29|13
+                      97|29
+                      53|29
+                      61|53
+                      97|53
+                      61|29
+                      47|13
+                      75|47
+                      97|75
+                      47|61
+                      75|61
+                      47|29
+                      75|13
+                      53|13
+
+                      97,13,75,29,47
+                      """, 47);
+        yield return (File.ReadAllText("Day5.txt"), 6897);
+    }
+
+    [Test]
+    [MethodDataSource(nameof(GetSumOfMiddlePageNumbersFromCorrectedUpdatesData))]
+    public async Task SumOfMiddlePageNumbersFromCorrectedUpdates(string input, int expected)
+    {
+        await Assert.That(Day5.SumOfMiddlePageNumbersFromCorrectedUpdates(input)).IsEqualTo(expected);
     }
 }

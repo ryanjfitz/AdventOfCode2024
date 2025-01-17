@@ -2,74 +2,63 @@ namespace AdventOfCode2024.Tests;
 
 public class Day7Tests
 {
-    public static TheoryData<string, long> Data =>
-        new()
-        {
-            { "0: 0 0", 0 },
-            { "2: 1 1", 2 },
-            { "5: 2 3", 5 },
-            { "14: 2 7", 14 },
-            { "17: 2 7 3", 17 },
-            { "27: 2 7 3", 27 },
-            { "13: 3 3 2 2", 13 },
-            {
-                """
-                17: 2 7 3
-                27: 2 7 3
-                """,
-                44
-            },
-            {
-                """
-                190: 10 19
-                3267: 81 40 27
-                83: 17 5
-                156: 15 6
-                7290: 6 8 6 15
-                161011: 16 10 13
-                192: 17 8 14
-                21037: 9 7 18 13
-                292: 11 6 16 20
-                """,
-                3749
-            },
-            { File.ReadAllText("Day7.txt"), 5837374519342 }
-        };
-
-    [Theory]
-    [MemberData(nameof(Data))]
-    public void GetTotalCalibrationResult(string input, long expected)
+    public static IEnumerable<(string, long)> GetData()
     {
-        Assert.Equal(expected, Day7.GetTotalCalibrationResult(input));
+        yield return ("0: 0 0", 0);
+        yield return ("2: 1 1", 2);
+        yield return ("5: 2 3", 5);
+        yield return ("14: 2 7", 14);
+        yield return ("17: 2 7 3", 17);
+        yield return ("27: 2 7 3", 27);
+        yield return ("13: 3 3 2 2", 13);
+        yield return ("""
+                      17: 2 7 3
+                      27: 2 7 3
+                      """, 44);
+        yield return ("""
+                      190: 10 19
+                      3267: 81 40 27
+                      83: 17 5
+                      156: 15 6
+                      7290: 6 8 6 15
+                      161011: 16 10 13
+                      192: 17 8 14
+                      21037: 9 7 18 13
+                      292: 11 6 16 20
+                      """, 3749);
+        yield return (File.ReadAllText("Day7.txt"), 5837374519342);
     }
 
-    public static TheoryData<string, long> ConcatenatedData =>
-        new()
-        {
-            { "156: 15 6", 156 },
-            { "7290: 6 8 6 15", 7290 },
-            { "192: 17 8 14", 192 },
-            {
-                """
-                190: 10 19
-                3267: 81 40 27
-                83: 17 5
-                156: 15 6
-                7290: 6 8 6 15
-                161011: 16 10 13
-                192: 17 8 14
-                21037: 9 7 18 13
-                292: 11 6 16 20
-                """,
-                11387
-            },
-            { File.ReadAllText("Day7.txt"), 492383931650959 }
-        };
-
-    [Theory]
-    [MemberData(nameof(ConcatenatedData))]
-    public void GetTotalConcatenatedCalibrationResult(string input, long expected)
+    [Test]
+    [MethodDataSource(nameof(GetData))]
+    public async Task GetTotalCalibrationResult(string input, long expected)
     {
-        Assert.Equal(expected, Day7.GetTotalCalibrationResult(input, allowConcatenation: true));
+        await Assert.That(Day7.GetTotalCalibrationResult(input)).IsEqualTo(expected);
+    }
+
+    public static IEnumerable<(string, long)> GetConcatenatedData()
+    {
+        yield return ("156: 15 6", 156);
+        yield return ("7290: 6 8 6 15", 7290);
+        yield return ("192: 17 8 14", 192);
+        yield return ("""
+                      190: 10 19
+                      3267: 81 40 27
+                      83: 17 5
+                      156: 15 6
+                      7290: 6 8 6 15
+                      161011: 16 10 13
+                      192: 17 8 14
+                      21037: 9 7 18 13
+                      292: 11 6 16 20
+                      """, 11387);
+        yield return (File.ReadAllText("Day7.txt"), 492383931650959);
+    }
+
+    [Test]
+    [MethodDataSource(nameof(GetConcatenatedData))]
+    public async Task GetTotalConcatenatedCalibrationResult(string input, long expected)
+    {
+        await Assert.That(Day7.GetTotalCalibrationResult(input, allowConcatenation: true)).IsEqualTo(expected);
     }
 }

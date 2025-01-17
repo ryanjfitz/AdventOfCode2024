@@ -2,263 +2,189 @@ namespace AdventOfCode2024.Tests;
 
 public class Day4Tests
 {
-    public static TheoryData<string, int> XmasData =>
-        new()
-        {
-            {
-                """
-                ....
-                ....
-                ....
-                ....
-                """,
-                0
-            },
-            {
-                """
-                XMAS
-                ....
-                ....
-                ....
-                """,
-                1
-            },
-            {
-                """
-                XMA.
-                ....
-                ....
-                ....
-                """,
-                0
-            },
-            {
-                """
-                SAMX
-                ....
-                ....
-                ....
-                """,
-                1
-            },
-            {
-                """
-                XMAS
-                XMAS
-                ....
-                ....
-                """,
-                2
-            },
-            {
-                """
-                XMASXMAS
-                ........
-                ........
-                ........
-                ........
-                ........
-                ........
-                """,
-                2
-            },
-            {
-                """
-                SAMXSAMX
-                ........
-                ........
-                ........
-                ........
-                ........
-                ........
-                """,
-                2
-            },
-            {
-                """
-                XMASSAMX
-                ........
-                ........
-                ........
-                ........
-                ........
-                ........
-                ........
-                """,
-                2
-            },
-            {
-                """
-                X...
-                .M..
-                ..A.
-                ...S
-                """,
-                1
-            },
-            {
-                """
-                ...X
-                ..M.
-                .A..
-                S...
-                """,
-                1
-            },
-            {
-                """
-                ...S
-                ..A.
-                .M..
-                X...
-                """,
-                1
-            },
-            {
-                """
-                S...
-                .A..
-                ..M.
-                ...X
-                """,
-                1
-            },
-            {
-                """
-                X..S
-                .MA.
-                .MA.
-                X..S
-                """,
-                2
-            },
-            {
-                """
-                X...
-                M...
-                A...
-                S...
-                """,
-                1
-            },
-            {
-                """
-                ...S
-                ...A
-                ...M
-                ...X
-                """,
-                1
-            },
-            {
-                """
-                XMASAMX
-                .......
-                .......
-                .......
-                .......
-                .......
-                .......
-                """,
-                2
-            },
-            {
-                """
-                X......
-                M......
-                A......
-                S......
-                A......
-                M......
-                X......
-                """,
-                2
-            },
-            {
-                """
-                MMMSXXMASM
-                MSAMXMSMSA
-                AMXSXMAAMM
-                MSAMASMSMX
-                XMASAMXAMM
-                XXAMMXXAMA
-                SMSMSASXSS
-                SAXAMASAAA
-                MAMMMXMMMM
-                MXMXAXMASX
-                """,
-                18
-            },
-            {
-                File.ReadAllText("Day4.txt"), 2633
-            }
-        };
-
-    [Theory]
-    [MemberData(nameof(XmasData))]
-    public void GetXmasCount(string input, int expected)
+    public static IEnumerable<(string, int)> GetXmasData()
     {
-        Assert.Equal(expected, Day4.GetXmasCount(input));
+        yield return ("""
+                      ....
+                      ....
+                      ....
+                      ....
+                      """, 0);
+        yield return ("""
+                      XMAS
+                      ....
+                      ....
+                      ....
+                      """, 1);
+        yield return ("""
+                      XMA.
+                      ....
+                      ....
+                      ....
+                      """, 0);
+        yield return ("""
+                      SAMX
+                      ....
+                      ....
+                      ....
+                      """, 1);
+        yield return ("""
+                      XMAS
+                      XMAS
+                      ....
+                      ....
+                      """, 2);
+        yield return ("""
+                      XMASXMAS
+                      ........
+                      ........
+                      ........
+                      ........
+                      ........
+                      ........
+                      """, 2);
+        yield return ("""
+                      SAMXSAMX
+                      ........
+                      ........
+                      ........
+                      ........
+                      ........
+                      ........
+                      """, 2);
+        yield return ("""
+                      XMASSAMX
+                      ........
+                      ........
+                      ........
+                      ........
+                      ........
+                      ........
+                      ........
+                      """, 2);
+        yield return ("""
+                      X...
+                      .M..
+                      ..A.
+                      ...S
+                      """, 1);
+        yield return ("""
+                      ...X
+                      ..M.
+                      .A..
+                      S...
+                      """, 1);
+        yield return ("""
+                      ...S
+                      ..A.
+                      .M..
+                      X...
+                      """, 1);
+        yield return ("""
+                      S...
+                      .A..
+                      ..M.
+                      ...X
+                      """, 1);
+        yield return ("""
+                      X..S
+                      .MA.
+                      .MA.
+                      X..S
+                      """, 2);
+        yield return ("""
+                      X...
+                      M...
+                      A...
+                      S...
+                      """, 1);
+        yield return ("""
+                      ...S
+                      ...A
+                      ...M
+                      ...X
+                      """, 1);
+        yield return ("""
+                      XMASAMX
+                      .......
+                      .......
+                      .......
+                      .......
+                      .......
+                      .......
+                      """, 2);
+        yield return ("""
+                      X......
+                      M......
+                      A......
+                      S......
+                      A......
+                      M......
+                      X......
+                      """, 2);
+        yield return ("""
+                      MMMSXXMASM
+                      MSAMXMSMSA
+                      AMXSXMAAMM
+                      MSAMASMSMX
+                      XMASAMXAMM
+                      XXAMMXXAMA
+                      SMSMSASXSS
+                      SAXAMASAAA
+                      MAMMMXMMMM
+                      MXMXAXMASX
+                      """, 18);
+        yield return (File.ReadAllText("Day4.txt"), 2633);
     }
 
-    public static TheoryData<string, int> XShapedMasData => new()
+    [Test]
+    [MethodDataSource(nameof(GetXmasData))]
+    public async Task GetXmasCount(string input, int expected)
     {
-        {
-            """
-            M.S
-            .A.
-            M.S
-            """,
-            1
-        },
-        {
-            """
-            S.S
-            .A.
-            M.M
-            """,
-            1
-        },
-        {
-            """
-            S.M
-            .A.
-            S.M
-            """,
-            1
-        },
-        {
-            """
-            M.M
-            .A.
-            S.S
-            """,
-            1
-        },
-        {
-            """
-            MMMSXXMASM
-            MSAMXMSMSA
-            AMXSXMAAMM
-            MSAMASMSMX
-            XMASAMXAMM
-            XXAMMXXAMA
-            SMSMSASXSS
-            SAXAMASAAA
-            MAMMMXMMMM
-            MXMXAXMASX
-            """,
-            9
-        },
-        {
-            File.ReadAllText("Day4.txt"), 1936
-        }
-    };
+        await Assert.That(Day4.GetXmasCount(input)).IsEqualTo(expected);
+    }
 
-    [Theory]
-    [MemberData(nameof(XShapedMasData))]
-    public void GetXShapedMasCount(string input, int expected)
+    public static IEnumerable<(string, int)> GetXShapedMasData()
     {
-        Assert.Equal(expected, Day4.GetXShapedMasCount(input));
+        yield return ("""
+                      M.S
+                      .A.
+                      M.S
+                      """, 1);
+        yield return ("""
+                      S.S
+                      .A.
+                      M.M
+                      """, 1);
+        yield return ("""
+                      S.M
+                      .A.
+                      S.M
+                      """, 1);
+        yield return ("""
+                      M.M
+                      .A.
+                      S.S
+                      """, 1);
+        yield return ("""
+                      MMMSXXMASM
+                      MSAMXMSMSA
+                      AMXSXMAAMM
+                      MSAMASMSMX
+                      XMASAMXAMM
+                      XXAMMXXAMA
+                      SMSMSASXSS
+                      SAXAMASAAA
+                      MAMMMXMMMM
+                      MXMXAXMASX
+                      """, 9);
+        yield return (File.ReadAllText("Day4.txt"), 1936);
+    }
+
+    [Test]
+    [MethodDataSource(nameof(GetXShapedMasData))]
+    public async Task GetXShapedMasCount(string input, int expected)
+    {
+        await Assert.That(Day4.GetXShapedMasCount(input)).IsEqualTo(expected);
     }
 }

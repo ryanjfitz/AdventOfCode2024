@@ -2,137 +2,111 @@ namespace AdventOfCode2024.Tests;
 
 public class Day2Tests
 {
-    [Theory]
-    [InlineData(new[] { 1, 2 }, true)]
-    [InlineData(new[] { 2, 1 }, true)]
-    [InlineData(new[] { 1, 3 }, true)]
-    [InlineData(new[] { 1, 4 }, true)]
-    [InlineData(new[] { 1, 5 }, false)]
-    [InlineData(new[] { 1, 1 }, false)]
-    [InlineData(new[] { 1, 2, 3 }, true)]
-    [InlineData(new[] { 1, 2, 5 }, true)]
-    [InlineData(new[] { 1, 2, 6 }, false)]
-    [InlineData(new[] { 6, 2, 1 }, false)]
-    [InlineData(new[] { 1, 2, 4, 3 }, false)]
-    [InlineData(new[] { 7, 6, 4, 2, 1 }, true)]
-    [InlineData(new[] { 1, 3, 6, 7, 9 }, true)]
-    [InlineData(new[] { 1, 2, 7, 8, 9 }, false)]
-    [InlineData(new[] { 9, 7, 6, 2, 1 }, false)]
-    [InlineData(new[] { 1, 3, 2, 4, 5 }, false)]
-    [InlineData(new[] { 8, 6, 4, 4, 1 }, false)]
-    public void IsSafe(int[] report, bool expected)
+    [Test]
+    [Arguments(new[] { 1, 2 }, true)]
+    [Arguments(new[] { 2, 1 }, true)]
+    [Arguments(new[] { 1, 3 }, true)]
+    [Arguments(new[] { 1, 4 }, true)]
+    [Arguments(new[] { 1, 5 }, false)]
+    [Arguments(new[] { 1, 1 }, false)]
+    [Arguments(new[] { 1, 2, 3 }, true)]
+    [Arguments(new[] { 1, 2, 5 }, true)]
+    [Arguments(new[] { 1, 2, 6 }, false)]
+    [Arguments(new[] { 6, 2, 1 }, false)]
+    [Arguments(new[] { 1, 2, 4, 3 }, false)]
+    [Arguments(new[] { 7, 6, 4, 2, 1 }, true)]
+    [Arguments(new[] { 1, 3, 6, 7, 9 }, true)]
+    [Arguments(new[] { 1, 2, 7, 8, 9 }, false)]
+    [Arguments(new[] { 9, 7, 6, 2, 1 }, false)]
+    [Arguments(new[] { 1, 3, 2, 4, 5 }, false)]
+    [Arguments(new[] { 8, 6, 4, 4, 1 }, false)]
+    public async Task IsSafe(int[] report, bool expected)
     {
-        Assert.Equal(expected, Day2.IsSafe(report));
+        await Assert.That(Day2.IsSafe(report)).IsEqualTo(expected);
     }
 
-    public static TheoryData<string, int> GetNumberOfSafeReportsData =>
-        new()
-        {
-            {
-                """
-                1 9
-                3 8
-                """,
-                0
-            },
-            {
-                """
-                1 2
-                3 8
-                """,
-                1
-            },
-            {
-                """
-                1 2
-                3 4
-                """,
-                2
-            },
-            {
-                """
-                7 6 4 2 1
-                1 2 7 8 9
-                9 7 6 2 1
-                1 3 2 4 5
-                8 6 4 4 1
-                1 3 6 7 9
-                """,
-                2
-            },
-            { File.ReadAllText("Day2.txt"), 407 }
-        };
-
-    [Theory]
-    [MemberData(nameof(GetNumberOfSafeReportsData))]
-    public void GetNumberOfSafeReports(string input, int expected)
+    public static IEnumerable<(string, int)> GetNumberOfSafeReportsData()
     {
-        Assert.Equal(expected, Day2.GetNumberOfSafeReports(input));
+        yield return ("""
+                      1 9
+                      3 8
+                      """, 0);
+        yield return ("""
+                      1 2
+                      3 8
+                      """, 1);
+        yield return ("""
+                      1 2
+                      3 4
+                      """, 2);
+        yield return ("""
+                      7 6 4 2 1
+                      1 2 7 8 9
+                      9 7 6 2 1
+                      1 3 2 4 5
+                      8 6 4 4 1
+                      1 3 6 7 9
+                      """, 2);
+        yield return (File.ReadAllText("Day2.txt"), 407);
     }
 
-    [Theory]
-    [InlineData(new[] { 1, 1, 2 }, true)]
-    [InlineData(new[] { 1, 4, 3 }, true)]
-    [InlineData(new[] { 1, 5, 6 }, true)]
-    [InlineData(new[] { 0, 0, 1 }, true)]
-    [InlineData(new[] { 1, 0, 0 }, true)]
-    [InlineData(new[] { 1, 5, 4, 7 }, true)]
-    [InlineData(new[] { 7, 4, 5, 1 }, true)]
-    [InlineData(new[] { 2, 1, 2, 3 }, true)]
-    [InlineData(new[] { 2, 3, 2, 1 }, true)]
-    [InlineData(new[] { 7, 6, 4, 2, 1 }, true)]
-    [InlineData(new[] { 1, 3, 6, 7, 9 }, true)]
-    [InlineData(new[] { 1, 2, 7, 8, 9 }, false)]
-    [InlineData(new[] { 9, 7, 6, 2, 1 }, false)]
-    [InlineData(new[] { 1, 3, 2, 4, 5 }, true)]
-    [InlineData(new[] { 8, 6, 4, 4, 1 }, true)]
-    public void IsSafeWithProblemDampener(int[] report, bool expected)
+    [Test]
+    [MethodDataSource(nameof(GetNumberOfSafeReportsData))]
+    public async Task GetNumberOfSafeReports(string input, int expected)
     {
-        Assert.Equal(expected, Day2.IsSafe(report, useProblemDampener: true));
+        await Assert.That(Day2.GetNumberOfSafeReports(input)).IsEqualTo(expected);
     }
 
-    public static TheoryData<string, int> GetNumberOfSafeReportsWithProblemDampenerData =>
-        new()
-        {
-            {
-                """
-                1 9
-                3 8
-                """,
-                2
-            },
-            {
-                """
-                1 2
-                3 8
-                """,
-                2
-            },
-            {
-                """
-                1 2
-                3 4
-                """,
-                2
-            },
-            {
-                """
-                7 6 4 2 1
-                1 2 7 8 9
-                9 7 6 2 1
-                1 3 2 4 5
-                8 6 4 4 1
-                1 3 6 7 9
-                """,
-                4
-            },
-            { File.ReadAllText("Day2.txt"), 459 }
-        };
-
-    [Theory]
-    [MemberData(nameof(GetNumberOfSafeReportsWithProblemDampenerData))]
-    public void GetNumberOfSafeReportsWithProblemDampener(string input, int expected)
+    [Test]
+    [Arguments(new[] { 1, 1, 2 }, true)]
+    [Arguments(new[] { 1, 4, 3 }, true)]
+    [Arguments(new[] { 1, 5, 6 }, true)]
+    [Arguments(new[] { 0, 0, 1 }, true)]
+    [Arguments(new[] { 1, 0, 0 }, true)]
+    [Arguments(new[] { 1, 5, 4, 7 }, true)]
+    [Arguments(new[] { 7, 4, 5, 1 }, true)]
+    [Arguments(new[] { 2, 1, 2, 3 }, true)]
+    [Arguments(new[] { 2, 3, 2, 1 }, true)]
+    [Arguments(new[] { 7, 6, 4, 2, 1 }, true)]
+    [Arguments(new[] { 1, 3, 6, 7, 9 }, true)]
+    [Arguments(new[] { 1, 2, 7, 8, 9 }, false)]
+    [Arguments(new[] { 9, 7, 6, 2, 1 }, false)]
+    [Arguments(new[] { 1, 3, 2, 4, 5 }, true)]
+    [Arguments(new[] { 8, 6, 4, 4, 1 }, true)]
+    public async Task IsSafeWithProblemDampener(int[] report, bool expected)
     {
-        Assert.Equal(expected, Day2.GetNumberOfSafeReports(input, useProblemDampener: true));
+        await Assert.That(Day2.IsSafe(report, useProblemDampener: true)).IsEqualTo(expected);
+    }
+
+    public static IEnumerable<(string, int)> GetNumberOfSafeReportsWithProblemDampenerData()
+    {
+        yield return ("""
+                      1 9
+                      3 8
+                      """, 2);
+        yield return ("""
+                      1 2
+                      3 8
+                      """, 2);
+        yield return ("""
+                      1 2
+                      3 4
+                      """, 2);
+        yield return ("""
+                      7 6 4 2 1
+                      1 2 7 8 9
+                      9 7 6 2 1
+                      1 3 2 4 5
+                      8 6 4 4 1
+                      1 3 6 7 9
+                      """, 4);
+        yield return (File.ReadAllText("Day2.txt"), 459);
+    }
+
+    [Test]
+    [MethodDataSource(nameof(GetNumberOfSafeReportsWithProblemDampenerData))]
+    public async Task GetNumberOfSafeReportsWithProblemDampener(string input, int expected)
+    {
+        await Assert.That(Day2.GetNumberOfSafeReports(input, useProblemDampener: true)).IsEqualTo(expected);
     }
 }

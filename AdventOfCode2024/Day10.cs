@@ -51,10 +51,10 @@ public static class Day10
 
         List<Position> positions = [];
 
-        Position top = startPosition with { I = startPosition.I - 1 };
-        Position bottom = startPosition with { I = startPosition.I + 1 };
-        Position left = startPosition with { J = startPosition.J - 1 };
-        Position right = startPosition with { J = startPosition.J + 1 };
+        Position top = startPosition.Top;
+        Position bottom = startPosition.Bottom;
+        Position left = startPosition.Left;
+        Position right = startPosition.Right;
 
         if (top.IsWithinBounds(grid) && grid[top.I, top.J] == nextHeight)
         {

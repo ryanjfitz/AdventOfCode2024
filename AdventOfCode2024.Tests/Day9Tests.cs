@@ -2,30 +2,26 @@ namespace AdventOfCode2024.Tests;
 
 public class Day9Tests
 {
-    public static TheoryData<string, string, string, long> MoveBlocksAndCalculateChecksumData => new()
+    public static IEnumerable<(string, string, string, long)> GetMoveBlocksAndCalculateChecksumData()
     {
-        { "1", "0", "0", 0 },
-        { "11", "0.", "0.", 0 },
-        { "111", "0.1", "01.", 1 },
-        { "1111", "0.1.", "01..", 1 },
-        { "11111", "0.1.2", "021..", 4 },
-        { "12", "0..", "0..", 0 },
-        { "123", "0..111", "0111..", 6 },
-        { "12345", "0..111....22222", "022111222......", 60 },
-        {
-            "2333133121414131402",
-            "00...111...2...333.44.5555.6666.777.888899",
-            "0099811188827773336446555566..............",
-            1928
-        },
-        { "101010101", "01234", "01234", 30 },
-        { "101010101010101010101", "012345678910", "012345678910", 385 },
-        { File.ReadAllText("Day9.txt"), "", "", 6367087064415 }
-    };
+        yield return ("1", "0", "0", 0);
+        yield return ("11", "0.", "0.", 0);
+        yield return ("111", "0.1", "01.", 1);
+        yield return ("1111", "0.1.", "01..", 1);
+        yield return ("11111", "0.1.2", "021..", 4);
+        yield return ("12", "0..", "0..", 0);
+        yield return ("123", "0..111", "0111..", 6);
+        yield return ("12345", "0..111....22222", "022111222......", 60);
+        yield return ("2333133121414131402", "00...111...2...333.44.5555.6666.777.888899",
+            "0099811188827773336446555566..............", 1928);
+        yield return ("101010101", "01234", "01234", 30);
+        yield return ("101010101010101010101", "012345678910", "012345678910", 385);
+        yield return (File.ReadAllText("Day9.txt"), "", "", 6367087064415);
+    }
 
-    [Theory]
-    [MemberData(nameof(MoveBlocksAndCalculateChecksumData))]
-    public void MoveBlocksAndCalculateChecksum(
+    [Test]
+    [MethodDataSource(nameof(GetMoveBlocksAndCalculateChecksumData))]
+    public async Task MoveBlocksAndCalculateChecksum(
         string diskMap,
         string expectedBlocks,
         string expectedMovedBlocks,
@@ -33,29 +29,28 @@ public class Day9Tests
     {
         var result = Day9.MoveBlocksAndCalculateChecksum(diskMap);
 
-        if (diskMap != File.ReadAllText("Day9.txt"))
+        using (Assert.Multiple())
         {
-            Assert.Equal(expectedBlocks, result.Blocks);
-            Assert.Equal(expectedMovedBlocks, result.MovedBlocks);
-        }
+            if (diskMap != await File.ReadAllTextAsync("Day9.txt"))
+            {
+                await Assert.That(result.Blocks).IsEqualTo(expectedBlocks);
+                await Assert.That(result.MovedBlocks).IsEqualTo(expectedMovedBlocks);
+            }
 
-        Assert.Equal(expectedChecksum, result.Checksum);
+            await Assert.That(result.Checksum).IsEqualTo(expectedChecksum);
+        }
     }
 
-    public static TheoryData<string, string, string, long> MoveFilesAndCalculateChecksumData => new()
+    public static IEnumerable<(string, string, string, long)> GetMoveFilesAndCalculateChecksumData()
     {
-        {
-            "2333133121414131402",
-            "00...111...2...333.44.5555.6666.777.888899",
-            "00992111777.44.333....5555.6666.....8888..",
-            2858
-        },
-        { File.ReadAllText("Day9.txt"), "", "", 6390781891880 }
-    };
+        yield return ("2333133121414131402", "00...111...2...333.44.5555.6666.777.888899",
+            "00992111777.44.333....5555.6666.....8888..", 2858);
+        yield return (File.ReadAllText("Day9.txt"), "", "", 6390781891880);
+    }
 
-    [Theory]
-    [MemberData(nameof(MoveFilesAndCalculateChecksumData))]
-    public void MoveFilesAndCalculateChecksum(
+    [Test]
+    [MethodDataSource(nameof(GetMoveFilesAndCalculateChecksumData))]
+    public async Task MoveFilesAndCalculateChecksum(
         string diskMap,
         string expectedFiles,
         string expectedMovedFiles,
@@ -63,12 +58,15 @@ public class Day9Tests
     {
         var result = Day9.MoveFilesAndCalculateChecksum(diskMap);
 
-        if (diskMap != File.ReadAllText("Day9.txt"))
+        using (Assert.Multiple())
         {
-            Assert.Equal(expectedFiles, result.Files);
-            Assert.Equal(expectedMovedFiles, result.MovedFiles);
-        }
+            if (diskMap != await File.ReadAllTextAsync("Day9.txt"))
+            {
+                await Assert.That(result.Files).IsEqualTo(expectedFiles);
+                await Assert.That(result.MovedFiles).IsEqualTo(expectedMovedFiles);
+            }
 
-        Assert.Equal(expectedChecksum, result.Checksum);
+            await Assert.That(result.Checksum).IsEqualTo(expectedChecksum);
+        }
     }
 }
