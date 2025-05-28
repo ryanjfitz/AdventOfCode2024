@@ -127,7 +127,7 @@ public class Day14
             result.AppendLine();
         }
 
-        return result.ToString().Trim();
+        return result.ToString().TrimEnd();
     }
 
     private class Robot
