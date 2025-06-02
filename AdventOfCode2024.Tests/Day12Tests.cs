@@ -5,8 +5,6 @@ namespace AdventOfCode2024.Tests;
 
 public class Day12Tests
 {
-    private static readonly string PuzzleInput = File.ReadAllText("Day12.txt");
-
     public static IEnumerable<Func<(string, IEnumerable<Region>)>> GetRegionData()
     {
         yield return () => ("A",
@@ -175,77 +173,67 @@ public class Day12Tests
         await Assert.That(Day12.GetRegions(input)).IsEquivalentTo(expected, CollectionOrdering.Any);
     }
 
-    public static IEnumerable<(string, int)> GetPriceData()
-    {
-        yield return ("""
-                      RRRRIICCFF
-                      RRRRIICCCF
-                      VVRRRCCFFF
-                      VVRCCCJFFF
-                      VVVVCJJCFE
-                      VVIVCCJJEE
-                      VVIIICJJEE
-                      MIIIIIJJEE
-                      MIIISIJEEE
-                      MMMISSJEEE
-                      """, 1930);
-        yield return (PuzzleInput, 1549354);
-    }
-
     [Test]
-    [MethodDataSource(nameof(GetPriceData))]
+    [Arguments("""
+               RRRRIICCFF
+               RRRRIICCCF
+               VVRRRCCFFF
+               VVRCCCJFFF
+               VVVVCJJCFE
+               VVIVCCJJEE
+               VVIIICJJEE
+               MIIIIIJJEE
+               MIIISIJEEE
+               MMMISSJEEE
+               """, 1930)]
+    [PuzzleInput("Day12.txt", 1549354)]
     public async Task GetPrice(string input, int expected)
     {
         await Assert.That(Day12.GetPrice(input)).IsEqualTo(expected);
     }
 
-    public static IEnumerable<(string, int)> GetBulkDiscountPriceData()
-    {
-        yield return ("""
-                      AAAA
-                      BBCD
-                      BBCC
-                      EEEC
-                      """, 80);
-        yield return ("""
-                      OOOOO
-                      OXOXO
-                      OOOOO
-                      OXOXO
-                      OOOOO
-                      """, 436);
-        yield return ("""
-                      EEEEE
-                      EXXXX
-                      EEEEE
-                      EXXXX
-                      EEEEE
-                      """, 236);
-        yield return ("""
-                      AAAAAA
-                      AAABBA
-                      AAABBA
-                      ABBAAA
-                      ABBAAA
-                      AAAAAA
-                      """, 368);
-        yield return ("""
-                      RRRRIICCFF
-                      RRRRIICCCF
-                      VVRRRCCFFF
-                      VVRCCCJFFF
-                      VVVVCJJCFE
-                      VVIVCCJJEE
-                      VVIIICJJEE
-                      MIIIIIJJEE
-                      MIIISIJEEE
-                      MMMISSJEEE
-                      """, 1206);
-        yield return (PuzzleInput, 937032);
-    }
-
     [Test]
-    [MethodDataSource(nameof(GetBulkDiscountPriceData))]
+    [Arguments("""
+               AAAA
+               BBCD
+               BBCC
+               EEEC
+               """, 80)]
+    [Arguments("""
+               OOOOO
+               OXOXO
+               OOOOO
+               OXOXO
+               OOOOO
+               """, 436)]
+    [Arguments("""
+               EEEEE
+               EXXXX
+               EEEEE
+               EXXXX
+               EEEEE
+               """, 236)]
+    [Arguments("""
+               AAAAAA
+               AAABBA
+               AAABBA
+               ABBAAA
+               ABBAAA
+               AAAAAA
+               """, 368)]
+    [Arguments("""
+               RRRRIICCFF
+               RRRRIICCCF
+               VVRRRCCFFF
+               VVRCCCJFFF
+               VVVVCJJCFE
+               VVIVCCJJEE
+               VVIIICJJEE
+               MIIIIIJJEE
+               MIIISIJEEE
+               MMMISSJEEE
+               """, 1206)]
+    [PuzzleInput("Day12.txt", 937032)]
     public async Task GetBulkDiscountPrice(string input, int expected)
     {
         await Assert.That(Day12.GetBulkDiscountPrice(input)).IsEqualTo(expected);
