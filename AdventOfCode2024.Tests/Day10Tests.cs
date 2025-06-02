@@ -2,6 +2,8 @@ namespace AdventOfCode2024.Tests;
 
 public class Day10Tests
 {
+    private static readonly string PuzzleInput = File.ReadAllText("Day10.txt");
+
     public static IEnumerable<(string, int)> GetScoreData()
     {
         yield return ("0123456789", 1);
@@ -86,7 +88,7 @@ public class Day10Tests
                       01329801
                       10456732
                       """, 36);
-        yield return (File.ReadAllText("Day10.txt"), 733);
+        yield return (PuzzleInput, 733);
     }
 
     [Test]
@@ -134,7 +136,7 @@ public class Day10Tests
                       01329801
                       10456732
                       """, 81);
-        yield return (File.ReadAllText("Day10.txt"), 1514);
+        yield return (PuzzleInput, 1514);
     }
 
     [Test]

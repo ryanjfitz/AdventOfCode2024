@@ -2,6 +2,8 @@ namespace AdventOfCode2024.Tests;
 
 public class Day14Tests
 {
+    private static readonly string PuzzleInput = File.ReadAllText("Day14.txt");
+
     [Test]
     [Arguments("p=0,0 v=0,0", 5, 5, """
                                     1....
@@ -226,7 +228,7 @@ public class Day14Tests
     [Test]
     public async Task Solves_part_1()
     {
-        var sut = new Day14(await File.ReadAllTextAsync("Day14.txt"), 101, 103);
+        var sut = new Day14(PuzzleInput, 101, 103);
 
         for (int i = 1; i <= 100; i++)
         {
@@ -241,7 +243,7 @@ public class Day14Tests
     [Test]
     public async Task Solves_part_2()
     {
-        var sut = new Day14(await File.ReadAllTextAsync("Day14.txt"), 101, 103);
+        var sut = new Day14(PuzzleInput, 101, 103);
 
         for (int i = 1;; i++)
         {

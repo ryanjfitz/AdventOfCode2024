@@ -5,6 +5,8 @@ namespace AdventOfCode2024.Tests;
 
 public class Day12Tests
 {
+    private static readonly string PuzzleInput = File.ReadAllText("Day12.txt");
+
     public static IEnumerable<Func<(string, IEnumerable<Region>)>> GetRegionData()
     {
         yield return () => ("A",
@@ -187,7 +189,7 @@ public class Day12Tests
                       MIIISIJEEE
                       MMMISSJEEE
                       """, 1930);
-        yield return (File.ReadAllText("Day12.txt"), 1549354);
+        yield return (PuzzleInput, 1549354);
     }
 
     [Test]
@@ -239,7 +241,7 @@ public class Day12Tests
                       MIIISIJEEE
                       MMMISSJEEE
                       """, 1206);
-        yield return (File.ReadAllText("Day12.txt"), 937032);
+        yield return (PuzzleInput, 937032);
     }
 
     [Test]

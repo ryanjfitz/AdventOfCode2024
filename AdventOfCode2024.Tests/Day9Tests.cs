@@ -2,7 +2,7 @@ namespace AdventOfCode2024.Tests;
 
 public class Day9Tests
 {
-    private static readonly string Day9PuzzleInput = File.ReadAllText("Day9.txt");
+    private static readonly string PuzzleInput = File.ReadAllText("Day9.txt");
 
     public static IEnumerable<(string, string, string, long)> GetMoveBlocksAndCalculateChecksumData()
     {
@@ -18,7 +18,7 @@ public class Day9Tests
             "0099811188827773336446555566..............", 1928);
         yield return ("101010101", "01234", "01234", 30);
         yield return ("101010101010101010101", "012345678910", "012345678910", 385);
-        yield return (Day9PuzzleInput, "", "", 6367087064415);
+        yield return (PuzzleInput, "", "", 6367087064415);
     }
 
     [Test]
@@ -29,7 +29,7 @@ public class Day9Tests
 
         using (Assert.Multiple())
         {
-            if (diskMap != Day9PuzzleInput)
+            if (diskMap != PuzzleInput)
             {
                 await Assert.That(result.Blocks).IsEqualTo(expectedBlocks);
                 await Assert.That(result.MovedBlocks).IsEqualTo(expectedMovedBlocks);
@@ -43,7 +43,7 @@ public class Day9Tests
     {
         yield return ("2333133121414131402", "00...111...2...333.44.5555.6666.777.888899",
             "00992111777.44.333....5555.6666.....8888..", 2858);
-        yield return (Day9PuzzleInput, "", "", 6390781891880);
+        yield return (PuzzleInput, "", "", 6390781891880);
     }
 
     [Test]
@@ -54,7 +54,7 @@ public class Day9Tests
 
         using (Assert.Multiple())
         {
-            if (diskMap != Day9PuzzleInput)
+            if (diskMap != PuzzleInput)
             {
                 await Assert.That(result.Files).IsEqualTo(expectedFiles);
                 await Assert.That(result.MovedFiles).IsEqualTo(expectedMovedFiles);

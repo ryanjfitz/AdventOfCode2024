@@ -2,6 +2,8 @@ namespace AdventOfCode2024.Tests;
 
 public class Day5Tests
 {
+    private static readonly string PuzzleInput = File.ReadAllText("Day5.txt");
+
     public static IEnumerable<(string, string, bool)> GetIsUpdateInOrderData()
     {
         yield return ("1|2", "1,2", true);
@@ -69,7 +71,7 @@ public class Day5Tests
                       61,13,29
                       97,13,75,29,47
                       """, 143);
-        yield return (File.ReadAllText("Day5.txt"), 6505);
+        yield return (PuzzleInput, 6505);
     }
 
     [Test]
@@ -156,7 +158,7 @@ public class Day5Tests
 
                       97,13,75,29,47
                       """, 47);
-        yield return (File.ReadAllText("Day5.txt"), 6897);
+        yield return (PuzzleInput, 6897);
     }
 
     [Test]
