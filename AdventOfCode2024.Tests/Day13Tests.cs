@@ -2,6 +2,8 @@ namespace AdventOfCode2024.Tests;
 
 public class Day13Tests
 {
+    private static readonly string PuzzleInput = File.ReadAllText("Day13.txt");
+
     public static IEnumerable<(string, long)> GetMinimumNumberOfTokensToWinData()
     {
         yield return ("""
@@ -41,7 +43,7 @@ public class Day13Tests
                       Button B: X+27, Y+71
                       Prize: X=18641, Y=10279
                       """, 480);
-        yield return (File.ReadAllText("Day13.txt"), 32026);
+        yield return (PuzzleInput, 32026);
     }
 
     [Test]
@@ -90,7 +92,7 @@ public class Day13Tests
                       Button B: X+27, Y+71
                       Prize: X=18641, Y=10279
                       """, 875318608908);
-        yield return (File.ReadAllText("Day13.txt"), 89013607072065);
+        yield return (PuzzleInput, 89013607072065);
     }
 
     [Test]

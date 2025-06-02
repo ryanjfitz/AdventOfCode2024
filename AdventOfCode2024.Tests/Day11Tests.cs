@@ -2,6 +2,8 @@ namespace AdventOfCode2024.Tests;
 
 public class Day11Tests
 {
+    private static readonly string PuzzleInput = File.ReadAllText("Day11.txt");
+
     public static IEnumerable<Func<(string, long[])>> GetBlinkData()
     {
         yield return () => ("0", [1]);
@@ -42,8 +44,8 @@ public class Day11Tests
         yield return ("125 17", 5, 13);
         yield return ("125 17", 6, 22);
         yield return ("125 17", 25, 55312);
-        yield return (File.ReadAllText("Day11.txt"), 25, 204022);
-        yield return (File.ReadAllText("Day11.txt"), 75, 241651071960597);
+        yield return (PuzzleInput, 25, 204022);
+        yield return (PuzzleInput, 75, 241651071960597);
     }
 
     [Test]

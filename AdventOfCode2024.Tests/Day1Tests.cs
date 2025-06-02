@@ -2,6 +2,8 @@ namespace AdventOfCode2024.Tests;
 
 public class Day1Tests
 {
+    private static readonly string PuzzleInput = File.ReadAllText("Day1.txt");
+
     public static IEnumerable<(string, int)> GetTotalDistanceData()
     {
         yield return ("""
@@ -36,7 +38,7 @@ public class Day1Tests
                       3   9
                       3   3
                       """, 11);
-        yield return (File.ReadAllText("Day1.txt"), 2378066);
+        yield return (PuzzleInput, 2378066);
     }
 
     [Test]
@@ -61,7 +63,7 @@ public class Day1Tests
                       3   9
                       3   3
                       """, 31);
-        yield return (File.ReadAllText("Day1.txt"), 18934359);
+        yield return (PuzzleInput, 18934359);
     }
 
     [Test]

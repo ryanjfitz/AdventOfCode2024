@@ -2,6 +2,8 @@ namespace AdventOfCode2024.Tests;
 
 public class Day2Tests
 {
+    private static readonly string PuzzleInput = File.ReadAllText("Day2.txt");
+
     [Test]
     [Arguments(new[] { 1, 2 }, true)]
     [Arguments(new[] { 2, 1 }, true)]
@@ -47,7 +49,7 @@ public class Day2Tests
                       8 6 4 4 1
                       1 3 6 7 9
                       """, 2);
-        yield return (File.ReadAllText("Day2.txt"), 407);
+        yield return (PuzzleInput, 407);
     }
 
     [Test]
@@ -100,7 +102,7 @@ public class Day2Tests
                       8 6 4 4 1
                       1 3 6 7 9
                       """, 4);
-        yield return (File.ReadAllText("Day2.txt"), 459);
+        yield return (PuzzleInput, 459);
     }
 
     [Test]
