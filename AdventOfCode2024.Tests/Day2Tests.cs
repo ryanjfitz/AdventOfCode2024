@@ -2,8 +2,6 @@ namespace AdventOfCode2024.Tests;
 
 public class Day2Tests
 {
-    private static readonly string PuzzleInput = File.ReadAllText("Day2.txt");
-
     [Test]
     [Arguments(new[] { 1, 2 }, true)]
     [Arguments(new[] { 2, 1 }, true)]
@@ -27,33 +25,28 @@ public class Day2Tests
         await Assert.That(Day2.IsSafe(report)).IsEqualTo(expected);
     }
 
-    public static IEnumerable<(string, int)> GetNumberOfSafeReportsData()
-    {
-        yield return ("""
-                      1 9
-                      3 8
-                      """, 0);
-        yield return ("""
-                      1 2
-                      3 8
-                      """, 1);
-        yield return ("""
-                      1 2
-                      3 4
-                      """, 2);
-        yield return ("""
-                      7 6 4 2 1
-                      1 2 7 8 9
-                      9 7 6 2 1
-                      1 3 2 4 5
-                      8 6 4 4 1
-                      1 3 6 7 9
-                      """, 2);
-        yield return (PuzzleInput, 407);
-    }
-
     [Test]
-    [MethodDataSource(nameof(GetNumberOfSafeReportsData))]
+    [Arguments("""
+               1 9
+               3 8
+               """, 0)]
+    [Arguments("""
+               1 2
+               3 8
+               """, 1)]
+    [Arguments("""
+               1 2
+               3 4
+               """, 2)]
+    [Arguments("""
+               7 6 4 2 1
+               1 2 7 8 9
+               9 7 6 2 1
+               1 3 2 4 5
+               8 6 4 4 1
+               1 3 6 7 9
+               """, 2)]
+    [PuzzleInput("Day2.txt", 407)]
     public async Task GetNumberOfSafeReports(string input, int expected)
     {
         await Assert.That(Day2.GetNumberOfSafeReports(input)).IsEqualTo(expected);
@@ -80,33 +73,28 @@ public class Day2Tests
         await Assert.That(Day2.IsSafe(report, useProblemDampener: true)).IsEqualTo(expected);
     }
 
-    public static IEnumerable<(string, int)> GetNumberOfSafeReportsWithProblemDampenerData()
-    {
-        yield return ("""
-                      1 9
-                      3 8
-                      """, 2);
-        yield return ("""
-                      1 2
-                      3 8
-                      """, 2);
-        yield return ("""
-                      1 2
-                      3 4
-                      """, 2);
-        yield return ("""
-                      7 6 4 2 1
-                      1 2 7 8 9
-                      9 7 6 2 1
-                      1 3 2 4 5
-                      8 6 4 4 1
-                      1 3 6 7 9
-                      """, 4);
-        yield return (PuzzleInput, 459);
-    }
-
     [Test]
-    [MethodDataSource(nameof(GetNumberOfSafeReportsWithProblemDampenerData))]
+    [Arguments("""
+               1 9
+               3 8
+               """, 2)]
+    [Arguments("""
+               1 2
+               3 8
+               """, 2)]
+    [Arguments("""
+               1 2
+               3 4
+               """, 2)]
+    [Arguments("""
+               7 6 4 2 1
+               1 2 7 8 9
+               9 7 6 2 1
+               1 3 2 4 5
+               8 6 4 4 1
+               1 3 6 7 9
+               """, 4)]
+    [PuzzleInput("Day2.txt", 459)]
     public async Task GetNumberOfSafeReportsWithProblemDampener(string input, int expected)
     {
         await Assert.That(Day2.GetNumberOfSafeReports(input, useProblemDampener: true)).IsEqualTo(expected);
