@@ -41,7 +41,7 @@ public static class Day8
 
         foreach (var antenna in antennas)
         {
-            foreach (var antennaPositions in antenna.Positions.GetPermutations().Select(p => p.ToArray()))
+            foreach (var antennaPositions in antenna.Positions.GetPermutations())
             {
                 for (int i = 0; i < antennaPositions.Length - 1; i++)
                 {

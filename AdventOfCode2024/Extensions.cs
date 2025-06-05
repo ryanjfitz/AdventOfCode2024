@@ -38,16 +38,21 @@ public static class Extensions
         return result;
     }
 
-    public static IEnumerable<IEnumerable<T>> GetPermutations<T>(this ICollection<T> list, int? length = null)
+    public static T[][] GetPermutations<T>(this ICollection<T> list)
     {
-        length ??= list.Count;
+        return GetPermutations(list, list.Count)
+            .Select(permutation => permutation.ToArray())
+            .ToArray();
+    }
 
+    private static IEnumerable<IEnumerable<T>> GetPermutations<T>(ICollection<T> list, int length)
+    {
         if (length == 1)
         {
-            return list.Select(t => new[] { t });
+            return list.Select(listItem => new[] { listItem });
         }
 
         return GetPermutations(list, length - 1)
-            .SelectMany(t => list.Where(e => !t.Contains(e)), (t1, t2) => t1.Concat([t2]));
+            .SelectMany(permutation => list.Where(listItem => !permutation.Contains(listItem)), (permutation, listItem) => permutation.Concat([listItem]));
     }
 }
