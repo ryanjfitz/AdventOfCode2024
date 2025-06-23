@@ -50,12 +50,12 @@ public class Day15
     {
         _grid[_robotPosition.I, _robotPosition.J] = '.';
 
-        Move(_robotPosition, _moves.Dequeue());
+        _robotPosition = Move(_robotPosition, _moves.Dequeue());
 
         _grid[_robotPosition.I, _robotPosition.J] = '@';
     }
 
-    private bool Move(Position position, char move)
+    private Position Move(Position position, char move)
     {
         Position next = null!;
         Position nextNext = null!;
@@ -82,21 +82,20 @@ public class Day15
 
         if (_grid[next.I, next.J] == '#')
         {
-            return false;
+            return position;
         }
 
         if (_grid[next.I, next.J] == 'O')
         {
-            if (!Move(next, move))
+            if (Move(next, move) == next)
             {
-                return false;
+                return position;
             }
 
             _grid[nextNext.I, nextNext.J] = 'O';
         }
 
-        _robotPosition = next;
-        return true;
+        return next;
     }
 
     public int GetGpsSum()
