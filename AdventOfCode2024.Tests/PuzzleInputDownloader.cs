@@ -14,13 +14,13 @@ public static class PuzzleInputDownloader
                 continue;
             }
 
-            var request = new HttpRequestMessage(HttpMethod.Get, $"https://adventofcode.com/2024/day/{day}/input");
-            request.Headers.Add("Cookie", $"session={aocSessionCookie}");
-
             var httpClient = new HttpClient();
-            var httpResponseMessage = await httpClient.SendAsync(request);
-            httpResponseMessage.EnsureSuccessStatusCode();
-            var puzzleInput = (await httpResponseMessage.Content.ReadAsStringAsync()).TrimEnd().ReplaceLineEndings();
+            httpClient.DefaultRequestHeaders.Add("Cookie", $"session={aocSessionCookie}");
+
+            var response = await httpClient.GetAsync($"https://adventofcode.com/2024/day/{day}/input");
+            response.EnsureSuccessStatusCode();
+
+            var puzzleInput = (await response.Content.ReadAsStringAsync()).TrimEnd().ReplaceLineEndings();
             await File.WriteAllTextAsync($"Day{day}.txt", puzzleInput);
         }
     }
