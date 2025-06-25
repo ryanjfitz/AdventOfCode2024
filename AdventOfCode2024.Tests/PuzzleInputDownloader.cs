@@ -5,7 +5,7 @@ public static class PuzzleInputDownloader
     [Before(TestDiscovery)]
     public static async Task Download()
     {
-        const string aocSessionCookie = "Put your adventofcode.com session cookie here.";
+        const string aocSessionCookie = null!; // Put your adventofcode.com session cookie here.
 
         for (int day = 1; day <= 25; day++)
         {
@@ -14,6 +14,12 @@ public static class PuzzleInputDownloader
                 continue;
             }
 
+            if (aocSessionCookie == null)
+            {
+                throw new Exception("adventofcode.com session cookie not set.");
+            }
+
+#pragma warning disable CS0162 // Unreachable code detected
             var httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Add("Cookie", $"session={aocSessionCookie}");
 
@@ -22,6 +28,7 @@ public static class PuzzleInputDownloader
 
             var puzzleInput = (await response.Content.ReadAsStringAsync()).TrimEnd().ReplaceLineEndings();
             await File.WriteAllTextAsync($"Day{day}.txt", puzzleInput);
+#pragma warning restore CS0162 // Unreachable code detected
         }
     }
 }
