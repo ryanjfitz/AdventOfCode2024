@@ -137,4 +137,35 @@ public class Day15
 
         return result.ToString().TrimEnd();
     }
+
+    public static string WidenInput2X(string input)
+    {
+        StringBuilder result = new StringBuilder();
+
+        foreach (char c in input)
+        {
+            if (c == '#')
+            {
+                result.Append("##");
+            }
+            else if (c == 'O')
+            {
+                result.Append("[]");
+            }
+            else if (c == '.')
+            {
+                result.Append("..");
+            }
+            else if (c == '@')
+            {
+                result.Append("@.");
+            }
+            else
+            {
+                result.Append(c);
+            }
+        }
+
+        return result.ToString();
+    }
 }
