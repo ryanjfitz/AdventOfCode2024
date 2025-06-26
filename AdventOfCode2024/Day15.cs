@@ -94,6 +94,34 @@ public class Day15
 
             _grid[nextNext.I, nextNext.J] = 'O';
         }
+        else if (_grid[next.I, next.J] == '[')
+        {
+            if (Move(next, move) == next)
+            {
+                return position;
+            }
+
+            _grid[nextNext.I, nextNext.J] = '[';
+            _grid[nextNext.Right.I, nextNext.Right.J] = ']';
+            if (move is '^' or 'v')
+            {
+                _grid[next.Right.I, next.Right.J] = '.';
+            }
+        }
+        else if (_grid[next.I, next.J] == ']')
+        {
+            if (Move(next, move) == next)
+            {
+                return position;
+            }
+
+            _grid[nextNext.I, nextNext.J] = ']';
+            _grid[nextNext.Left.I, nextNext.Left.J] = '[';
+            if (move is '^' or 'v')
+            {
+                _grid[next.Left.I, next.Left.J] = '.';
+            }
+        }
 
         return next;
     }
@@ -136,5 +164,36 @@ public class Day15
         }
 
         return result.ToString().TrimEnd();
+    }
+
+    public static string WidenInput2X(string input)
+    {
+        StringBuilder result = new StringBuilder();
+
+        foreach (char c in input)
+        {
+            if (c == '#')
+            {
+                result.Append("##");
+            }
+            else if (c == 'O')
+            {
+                result.Append("[]");
+            }
+            else if (c == '.')
+            {
+                result.Append("..");
+            }
+            else if (c == '@')
+            {
+                result.Append("@.");
+            }
+            else
+            {
+                result.Append(c);
+            }
+        }
+
+        return result.ToString();
     }
 }
