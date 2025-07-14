@@ -348,6 +348,29 @@ public class Day15Part2Tests
         ##..........##
         ##############
         """)]
+    // Pushes a triangle of boxes up one - robot on left
+    [Arguments(
+        """
+        ##############
+        ##..........##
+        ##..........##
+        ##...[][]...##
+        ##....[]....##
+        ##....@.....##
+        ##############
+
+        ^
+        """,
+        1,
+        """
+        ##############
+        ##..........##
+        ##...[][]...##
+        ##....[]....##
+        ##....@.....##
+        ##..........##
+        ##############
+        """)]
     public async Task Should_move_robot_in_accordance_with_instructions_and_available_space(string input, int tickCount, string expected)
     {
         var sut = new Day15Part2(input);

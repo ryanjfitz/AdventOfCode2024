@@ -50,113 +50,120 @@ public class Day15Part2
     {
         _grid.SetValueAt(_robotPosition, '.');
 
-        _robotPosition = Move(_robotPosition);
+        _robotPosition = Move(_robotPosition, _moves.Dequeue());
 
         _grid.SetValueAt(_robotPosition, '@');
     }
 
-    private Position Move(Position position)
+    private Position Move(Position position, char move)
     {
-        if (_grid.GetValueAt(position.Top) == '[' && _grid.GetValueAt(position.Top.Right) == ']')
+        switch (move)
         {
-            // This is the same as the outer If but with .Top added.
-            if (_grid.GetValueAt(position.Top.Top) == '[' && _grid.GetValueAt(position.Top.Right.Top) == ']')
-            {
-                _grid.SetValueAt(position.Top.Right.Top, '.');
-                _grid.SetValueAt(position.Top.Top.Top, '[');
-                _grid.SetValueAt(position.Top.Top.Right.Top, ']');
-            }
+            case '^':
+                if (_grid.GetValueAt(position.Top) == '[' && _grid.GetValueAt(position.Top.Right) == ']')
+                {
+                    // This is the same as the outer If but with .Top added.
+                    Move(position.Top, move);
 
-            // This is the same as the outer If but with .Top.Left added.
-            if (_grid.GetValueAt(position.Top.Top.Left) == '[' && _grid.GetValueAt(position.Top.Right.Top.Left) == ']')
-            {
-                _grid.SetValueAt(position.Top.Top.Left, '.');
-                _grid.SetValueAt(position.Top.Top.Left.Top, '[');
-                _grid.SetValueAt(position.Top.Right.Top.Left.Top, ']');
-            }
+                    // This is the same as the outer If but with .Top.Left added.
+                    if (_grid.GetValueAt(position.Top.Top.Left) == '[' && _grid.GetValueAt(position.Top.Right.Top.Left) == ']')
+                    {
+                        _grid.SetValueAt(position.Top.Top.Left, '.');
+                        _grid.SetValueAt(position.Top.Top.Left.Top, '[');
+                        _grid.SetValueAt(position.Top.Right.Top.Left.Top, ']');
+                    }
 
-            // This is the same as the outer If but with .Top.Right added.
-            if (_grid.GetValueAt(position.Top.Right.Top) == '[' && _grid.GetValueAt(position.Top.Right.Top.Right) == ']')
-            {
-                _grid.SetValueAt(position.Top.Right.Top.Right, '.');
-                _grid.SetValueAt(position.Top.Right.Top.Top, '[');
-                _grid.SetValueAt(position.Top.Right.Top.Right.Top, ']');
-            }
+                    // This is the same as the outer If but with .Top.Right added.
+                    if (_grid.GetValueAt(position.Top.Right.Top) == '[' && _grid.GetValueAt(position.Top.Right.Top.Right) == ']')
+                    {
+                        _grid.SetValueAt(position.Top.Right.Top.Right, '.');
+                        _grid.SetValueAt(position.Top.Right.Top.Top, '[');
+                        _grid.SetValueAt(position.Top.Right.Top.Right.Top, ']');
+                    }
 
-            _grid.SetValueAt(position.Top.Right, '.'); // originally ]
-            _grid.SetValueAt(position.Top.Top, '['); // originally [ + .Top
-            _grid.SetValueAt(position.Top.Right.Top, ']'); // originally ] + .Top
-            position = position.Top;
-        }
+                    _grid.SetValueAt(position.Top.Right, '.'); // originally ]
+                    _grid.SetValueAt(position.Top.Top, '['); // originally [ + .Top
+                    _grid.SetValueAt(position.Top.Right.Top, ']'); // originally ] + .Top
+                    return position.Top;
+                }
 
-        if (_grid.GetValueAt(position.Top) == ']' && _grid.GetValueAt(position.Top.Left) == '[')
-        {
-            // This is the same as the outer If but with .Top added.
-            if (_grid.GetValueAt(position.Top.Top) == ']' && _grid.GetValueAt(position.Top.Left.Top) == '[')
-            {
-                _grid.SetValueAt(position.Top.Top.Left, '.');
-                _grid.SetValueAt(position.Top.Top.Top, ']');
-                _grid.SetValueAt(position.Top.Top.Top.Left, '[');
-            }
+                if (_grid.GetValueAt(position.Top) == ']' && _grid.GetValueAt(position.Top.Left) == '[')
+                {
+                    // This is the same as the outer If but with .Top added.
+                    if (_grid.GetValueAt(position.Top.Top) == ']' && _grid.GetValueAt(position.Top.Left.Top) == '[')
+                    {
+                        _grid.SetValueAt(position.Top.Top.Left, '.');
+                        _grid.SetValueAt(position.Top.Top.Top, ']');
+                        _grid.SetValueAt(position.Top.Top.Top.Left, '[');
+                    }
 
-            // This is the same as the outer If but with .Top.Right added.
-            if (_grid.GetValueAt(position.Top.Top.Right) == ']' && _grid.GetValueAt(position.Top.Left.Top.Right) == '[')
-            {
-                _grid.SetValueAt(position.Top.Top.Right, '.');
-                _grid.SetValueAt(position.Top.Top.Top, '[');
-                _grid.SetValueAt(position.Top.Top.Top.Right, ']');
-            }
+                    // This is the same as the outer If but with .Top.Right added.
+                    if (_grid.GetValueAt(position.Top.Top.Right) == ']' && _grid.GetValueAt(position.Top.Left.Top.Right) == '[')
+                    {
+                        _grid.SetValueAt(position.Top.Top.Right, '.');
+                        _grid.SetValueAt(position.Top.Top.Top, '[');
+                        _grid.SetValueAt(position.Top.Top.Top.Right, ']');
+                    }
 
-            // This is the same as the outer If but with .Top.Left added.
-            if (_grid.GetValueAt(position.Top.Top.Left) == ']' && _grid.GetValueAt(position.Top.Left.Top.Left) == '[')
-            {
-                _grid.SetValueAt(position.Top.Top.Left.Left, '.');
-                _grid.SetValueAt(position.Top.Top.Top.Left.Left, '[');
-                _grid.SetValueAt(position.Top.Top.Top.Left, ']');
-            }
+                    // This is the same as the outer If but with .Top.Left added.
+                    if (_grid.GetValueAt(position.Top.Top.Left) == ']' && _grid.GetValueAt(position.Top.Left.Top.Left) == '[')
+                    {
+                        _grid.SetValueAt(position.Top.Top.Left.Left, '.');
+                        _grid.SetValueAt(position.Top.Top.Top.Left.Left, '[');
+                        _grid.SetValueAt(position.Top.Top.Top.Left, ']');
+                    }
 
-            _grid.SetValueAt(position.Top.Left, '.'); // originally [
-            _grid.SetValueAt(position.Top.Top, ']'); // originally ] + .Top
-            _grid.SetValueAt(position.Top.Left.Top, '['); // originally [ + .Top
-            position = position.Top;
-        }
+                    _grid.SetValueAt(position.Top.Left, '.'); // originally [
+                    _grid.SetValueAt(position.Top.Top, ']'); // originally ] + .Top
+                    _grid.SetValueAt(position.Top.Left.Top, '['); // originally [ + .Top
+                    return position.Top;
+                }
 
-        if (_grid.GetValueAt(position.Bottom) == '[' && _grid.GetValueAt(position.Bottom.Right) == ']')
-        {
-            _grid.SetValueAt(position.Bottom.Right, '.'); // originally ]
-            _grid.SetValueAt(position.Bottom.Bottom, '['); // originally [ + .Bottom
-            _grid.SetValueAt(position.Bottom.Right.Bottom, ']'); // originally ] + .Bottom
-            position = position.Bottom;
-        }
+                break;
+            case 'v':
+                if (_grid.GetValueAt(position.Bottom) == '[' && _grid.GetValueAt(position.Bottom.Right) == ']')
+                {
+                    _grid.SetValueAt(position.Bottom.Right, '.'); // originally ]
+                    _grid.SetValueAt(position.Bottom.Bottom, '['); // originally [ + .Bottom
+                    _grid.SetValueAt(position.Bottom.Right.Bottom, ']'); // originally ] + .Bottom
+                    return position.Bottom;
+                }
 
-        if (_grid.GetValueAt(position.Bottom) == ']' && _grid.GetValueAt(position.Bottom.Left) == '[')
-        {
-            _grid.SetValueAt(position.Bottom.Left, '.'); // originally [
-            _grid.SetValueAt(position.Bottom.Bottom, ']'); // originally ] + .Bottom
-            _grid.SetValueAt(position.Bottom.Left.Bottom, '['); // originally [ + .Bottom
-            position = position.Bottom;
-        }
+                if (_grid.GetValueAt(position.Bottom) == ']' && _grid.GetValueAt(position.Bottom.Left) == '[')
+                {
+                    _grid.SetValueAt(position.Bottom.Left, '.'); // originally [
+                    _grid.SetValueAt(position.Bottom.Bottom, ']'); // originally ] + .Bottom
+                    _grid.SetValueAt(position.Bottom.Left.Bottom, '['); // originally [ + .Bottom
+                    return position.Bottom;
+                }
 
-        if (_grid.GetValueAt(position.Right) == '[' && _grid.GetValueAt(position.Right.Right) == ']')
-        {
-            // This is the same as the outer If but with .Right.Right added.
-            if (_grid.GetValueAt(position.Right.Right.Right) == '[' &&
-                _grid.GetValueAt(position.Right.Right.Right.Right) == ']')
-            {
-                _grid.SetValueAt(position.Right.Right.Right.Right, '[');
-                _grid.SetValueAt(position.Right.Right.Right.Right.Right, ']');
-            }
+                break;
+            case '<':
+                if (_grid.GetValueAt(position.Left) == ']' && _grid.GetValueAt(position.Left.Left) == '[')
+                {
+                    _grid.SetValueAt(position.Left.Left.Left, '[');
+                    _grid.SetValueAt(position.Left.Left, ']');
+                    return position.Left;
+                }
 
-            _grid.SetValueAt(position.Right.Right, '[');
-            _grid.SetValueAt(position.Right.Right.Right, ']');
-            position = position.Right;
-        }
+                break;
+            case '>':
+                if (_grid.GetValueAt(position.Right) == '[' && _grid.GetValueAt(position.Right.Right) == ']')
+                {
+                    // This is the same as the outer If but with .Right.Right added.
+                    if (_grid.GetValueAt(position.Right.Right.Right) == '[' &&
+                        _grid.GetValueAt(position.Right.Right.Right.Right) == ']')
+                    {
+                        _grid.SetValueAt(position.Right.Right.Right.Right, '[');
+                        _grid.SetValueAt(position.Right.Right.Right.Right.Right, ']');
+                    }
 
-        if (_grid.GetValueAt(position.Left) == ']' && _grid.GetValueAt(position.Left.Left) == '[')
-        {
-            _grid.SetValueAt(position.Left.Left.Left, '[');
-            _grid.SetValueAt(position.Left.Left, ']');
-            position = position.Left;
+                    _grid.SetValueAt(position.Right.Right, '[');
+                    _grid.SetValueAt(position.Right.Right.Right, ']');
+                    return position.Right;
+                }
+
+                break;
         }
 
         return position;
