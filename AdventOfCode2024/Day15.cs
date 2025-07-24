@@ -5,7 +5,7 @@ namespace AdventOfCode2024;
 public class Day15
 {
     private protected readonly char[,] Grid;
-    private readonly Queue<char> _moves = [];
+    protected Queue<char> _moves = [];
     private Position _robotPosition = null!;
 
     public IReadOnlyCollection<char> Moves => _moves;

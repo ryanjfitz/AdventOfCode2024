@@ -20,6 +20,11 @@ public class Day15Part2(string input) : Day15(input)
     {
         if (Grid.GetValueAt(position.Top) == '[' && Grid.GetValueAt(position.Top.Right) == ']')
         {
+            if (CantMove(position.Top, move) || CantMove(position.Top.Right, move))
+            {
+                return position;
+            }
+
             if (Move(position.Top, move) == position.Top)
             {
                 return position;
@@ -48,6 +53,11 @@ public class Day15Part2(string input) : Day15(input)
 
         if (Grid.GetValueAt(position.Top) == ']' && Grid.GetValueAt(position.Top.Left) == '[')
         {
+            if (CantMove(position.Top, move) || CantMove(position.Top.Left, move))
+            {
+                return position;
+            }
+
             if (Move(position.Top, move) == position.Top)
             {
                 return position;
@@ -86,6 +96,11 @@ public class Day15Part2(string input) : Day15(input)
     {
         if (Grid.GetValueAt(position.Bottom) == '[' && Grid.GetValueAt(position.Bottom.Right) == ']')
         {
+            if (CantMove(position.Bottom, move) || CantMove(position.Bottom.Right, move))
+            {
+                return position;
+            }
+
             if (Move(position.Bottom, move) == position.Bottom)
             {
                 return position;
@@ -114,6 +129,11 @@ public class Day15Part2(string input) : Day15(input)
 
         if (Grid.GetValueAt(position.Bottom) == ']' && Grid.GetValueAt(position.Bottom.Left) == '[')
         {
+            if (CantMove(position.Bottom, move) || CantMove(position.Bottom.Left, move))
+            {
+                return position;
+            }
+
             if (Move(position.Bottom, move) == position.Bottom)
             {
                 return position;
@@ -146,6 +166,14 @@ public class Day15Part2(string input) : Day15(input)
         }
 
         return position.Bottom;
+    }
+
+    private bool CantMove(Position position, char move)
+    {
+        return new Day15Part2(input)
+        {
+            _moves = new Queue<char>(_moves)
+        }.Move(position, move) == position;
     }
 
     private Position MoveLeft(Position position, char move)
