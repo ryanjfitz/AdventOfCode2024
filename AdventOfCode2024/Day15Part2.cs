@@ -18,7 +18,7 @@ public class Day15Part2(string input) : Day15(input)
 
     private Position MoveUp(Position position, char move)
     {
-        if (Grid.GetValueAt(position.Top) == '[' && Grid.GetValueAt(position.Top.Right) == ']')
+        if (Grid.GetValueAt(position.Top) == '[')
         {
             if (Move(position.Top, move) == position.Top)
             {
@@ -30,10 +30,7 @@ public class Day15Part2(string input) : Day15(input)
                 Move(position.Top.Left, move);
             }
 
-            if (Grid.GetValueAt(position.Top.Right) == '[' || Grid.GetValueAt(position.Top.Right) == ']')
-            {
-                Move(position.Top.Right, move);
-            }
+            Move(position.Top.Right, move);
 
             if (Grid.GetValueAt(position.Top.Right.Top) != '.' || Grid.GetValueAt(position.Top.Top) != '.')
             {
@@ -46,7 +43,7 @@ public class Day15Part2(string input) : Day15(input)
             Grid.SetValueAt(position.Top.Right, '.');
         }
 
-        if (Grid.GetValueAt(position.Top) == ']' && Grid.GetValueAt(position.Top.Left) == '[')
+        if (Grid.GetValueAt(position.Top) == ']')
         {
             if (Move(position.Top, move) == position.Top)
             {
@@ -58,10 +55,7 @@ public class Day15Part2(string input) : Day15(input)
                 Move(position.Top.Right, move);
             }
 
-            if (Grid.GetValueAt(position.Top.Left) == '[' || Grid.GetValueAt(position.Top.Left) == ']')
-            {
-                Move(position.Top.Left, move);
-            }
+            Move(position.Top.Left, move);
 
             if (Grid.GetValueAt(position.Top.Left.Top) != '.' || Grid.GetValueAt(position.Top.Top) != '.')
             {
@@ -84,7 +78,7 @@ public class Day15Part2(string input) : Day15(input)
 
     private Position MoveDown(Position position, char move)
     {
-        if (Grid.GetValueAt(position.Bottom) == '[' && Grid.GetValueAt(position.Bottom.Right) == ']')
+        if (Grid.GetValueAt(position.Bottom) == '[')
         {
             if (Move(position.Bottom, move) == position.Bottom)
             {
@@ -96,10 +90,7 @@ public class Day15Part2(string input) : Day15(input)
                 Move(position.Bottom.Left, move);
             }
 
-            if (Grid.GetValueAt(position.Bottom.Right) == '[' || Grid.GetValueAt(position.Bottom.Right) == ']')
-            {
-                Move(position.Bottom.Right, move);
-            }
+            Move(position.Bottom.Right, move);
 
             if (Grid.GetValueAt(position.Bottom.Right.Bottom) != '.' || Grid.GetValueAt(position.Bottom.Bottom) != '.')
             {
@@ -112,7 +103,7 @@ public class Day15Part2(string input) : Day15(input)
             Grid.SetValueAt(position.Bottom.Right, '.');
         }
 
-        if (Grid.GetValueAt(position.Bottom) == ']' && Grid.GetValueAt(position.Bottom.Left) == '[')
+        if (Grid.GetValueAt(position.Bottom) == ']')
         {
             if (Move(position.Bottom, move) == position.Bottom)
             {
@@ -124,10 +115,7 @@ public class Day15Part2(string input) : Day15(input)
                 Move(position.Bottom.Right, move);
             }
 
-            if (Grid.GetValueAt(position.Bottom.Left) == '[' || Grid.GetValueAt(position.Bottom.Left) == ']')
-            {
-                Move(position.Bottom.Left, move);
-            }
+            Move(position.Bottom.Left, move);
 
             if (Grid.GetValueAt(position.Bottom.Left.Bottom) != '.' || Grid.GetValueAt(position.Bottom.Bottom) != '.')
             {
@@ -150,7 +138,7 @@ public class Day15Part2(string input) : Day15(input)
 
     private Position MoveLeft(Position position, char move)
     {
-        if (Grid.GetValueAt(position.Left) == ']' && Grid.GetValueAt(position.Left.Left) == '[')
+        if (Grid.GetValueAt(position.Left) == ']')
         {
             Move(position.Left.Left, move);
 
@@ -174,7 +162,7 @@ public class Day15Part2(string input) : Day15(input)
 
     private Position MoveRight(Position position, char move)
     {
-        if (Grid.GetValueAt(position.Right) == '[' && Grid.GetValueAt(position.Right.Right) == ']')
+        if (Grid.GetValueAt(position.Right) == '[')
         {
             Move(position.Right.Right, move);
 
