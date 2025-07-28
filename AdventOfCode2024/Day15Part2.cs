@@ -18,6 +18,16 @@ public class Day15Part2(string input) : Day15(input)
 
     private Position MoveUp(Position position, char move)
     {
+        if (Grid.GetValueAt(position.Top) == '[' &&
+            Grid.GetValueAt(position.Top.Top) == ']' &&
+            Grid.GetValueAt(position.Top.Top.Right) == '[')
+        {
+            if (Move(position.Top.Right, move) == position.Top.Right)
+            {
+                return position;
+            }
+        }
+
         if (Grid.GetValueAt(position.Top) == '[')
         {
             if (Move(position.Top, move) == position.Top)
