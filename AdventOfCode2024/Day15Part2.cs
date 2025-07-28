@@ -20,9 +20,23 @@ public class Day15Part2(string input) : Day15(input)
     {
         if (Grid.GetValueAt(position.Top) == '[' &&
             Grid.GetValueAt(position.Top.Top) == ']' &&
-            Grid.GetValueAt(position.Top.Top.Right) == '[')
+            Grid.GetValueAt(position.Top.Top.Right) == '[' &&
+            Grid.GetValueAt(position.Top.Top.Top) != '#' &&
+            Grid.GetValueAt(position.Top.Top.Top.Left) != '#')
         {
             if (Move(position.Top.Right, move) == position.Top.Right)
+            {
+                return position;
+            }
+        }
+
+        if (Grid.GetValueAt(position.Top) == ']' &&
+            Grid.GetValueAt(position.Top.Top) == '[' &&
+            Grid.GetValueAt(position.Top.Top.Left) == ']' &&
+            Grid.GetValueAt(position.Top.Top.Top) != '#' &&
+            Grid.GetValueAt(position.Top.Top.Top.Right) != '#')
+        {
+            if (Move(position.Top.Left, move) == position.Top.Left)
             {
                 return position;
             }
