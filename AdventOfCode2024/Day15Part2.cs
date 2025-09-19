@@ -20,30 +20,21 @@ public class Day15Part2(string input) : Day15(input)
     {
         if (Grid.GetValueAt(position.Top) == '[')
         {
-            if (Grid.GetValueAt(position.Top.Top) == ']' && Grid.GetValueAt(position.Top.Top.Right) == '[')
+            Position top = position.Top;
+
+            while (Grid.GetValueAt(top.Top) == ']' && Grid.GetValueAt(top.Top.Right) == '[')
             {
-                if (Grid.GetValueAt(position.Top.Top.Top.Left) == '#')
+                if (Grid.GetValueAt(top.Top.Top.Left) == '#')
                 {
                     return position;
                 }
 
-                if (Grid.GetValueAt(position.Top.Top.Top.Right.Right) == '#')
+                if (Grid.GetValueAt(top.Top.Top.Right.Right) == '#')
                 {
                     return position;
                 }
 
-                if (Grid.GetValueAt(position.Top.Top.Top) == ']' && Grid.GetValueAt(position.Top.Top.Right.Top) == '[')
-                {
-                    if (Grid.GetValueAt(position.Top.Top.Top.Left.Top) == '#')
-                    {
-                        return position;
-                    }
-
-                    if (Grid.GetValueAt(position.Top.Top.Top.Right.Right.Top) == '#')
-                    {
-                        return position;
-                    }
-                }
+                top = top.Top;
             }
 
             if (Move(position.Top, move) == position.Top)
@@ -71,30 +62,21 @@ public class Day15Part2(string input) : Day15(input)
 
         if (Grid.GetValueAt(position.Top) == ']')
         {
-            if (Grid.GetValueAt(position.Top.Top) == '[' && Grid.GetValueAt(position.Top.Top.Left) == ']')
+            Position top = position.Top;
+
+            while (Grid.GetValueAt(top.Top) == '[' && Grid.GetValueAt(top.Top.Left) == ']')
             {
-                if (Grid.GetValueAt(position.Top.Top.Top.Right) == '#')
+                if (Grid.GetValueAt(top.Top.Top.Right) == '#')
                 {
                     return position;
                 }
 
-                if (Grid.GetValueAt(position.Top.Top.Top.Left.Left) == '#')
+                if (Grid.GetValueAt(top.Top.Top.Left.Left) == '#')
                 {
                     return position;
                 }
 
-                if (Grid.GetValueAt(position.Top.Top.Top) == '[' && Grid.GetValueAt(position.Top.Top.Left.Top) == ']')
-                {
-                    if (Grid.GetValueAt(position.Top.Top.Top.Right.Top) == '#')
-                    {
-                        return position;
-                    }
-
-                    if (Grid.GetValueAt(position.Top.Top.Top.Left.Left.Top) == '#')
-                    {
-                        return position;
-                    }
-                }
+                top = top.Top;
             }
 
             if (Move(position.Top, move) == position.Top)
@@ -132,6 +114,23 @@ public class Day15Part2(string input) : Day15(input)
     {
         if (Grid.GetValueAt(position.Bottom) == '[')
         {
+            Position bottom = position.Bottom;
+
+            while (Grid.GetValueAt(bottom.Bottom) == ']' && Grid.GetValueAt(bottom.Bottom.Right) == '[')
+            {
+                if (Grid.GetValueAt(bottom.Bottom.Bottom.Left) == '#')
+                {
+                    return position;
+                }
+
+                if (Grid.GetValueAt(bottom.Bottom.Bottom.Right.Right) == '#')
+                {
+                    return position;
+                }
+
+                bottom = bottom.Bottom;
+            }
+
             if (Move(position.Bottom, move) == position.Bottom)
             {
                 return position;
@@ -157,6 +156,23 @@ public class Day15Part2(string input) : Day15(input)
 
         if (Grid.GetValueAt(position.Bottom) == ']')
         {
+            Position bottom = position.Bottom;
+
+            while (Grid.GetValueAt(bottom.Bottom) == '[' && Grid.GetValueAt(bottom.Bottom.Left) == ']')
+            {
+                if (Grid.GetValueAt(bottom.Bottom.Bottom.Right) == '#')
+                {
+                    return position;
+                }
+
+                if (Grid.GetValueAt(bottom.Bottom.Bottom.Left.Left) == '#')
+                {
+                    return position;
+                }
+
+                bottom = bottom.Bottom;
+            }
+
             if (Move(position.Bottom, move) == position.Bottom)
             {
                 return position;
