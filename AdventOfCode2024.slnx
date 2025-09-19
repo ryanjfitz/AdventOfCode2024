@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="AdventOfCode2024.Console/AdventOfCode2024.Console.csproj" />
+  <Project Path="AdventOfCode2024.Tests/AdventOfCode2024.Tests.csproj" />
+  <Project Path="AdventOfCode2024/AdventOfCode2024.csproj" />
+</Solution>
