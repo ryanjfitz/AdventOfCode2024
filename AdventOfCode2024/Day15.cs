@@ -4,7 +4,7 @@ namespace AdventOfCode2024;
 
 public class Day15
 {
-    private readonly char[,] _grid;
+    private protected readonly char[,] Grid;
     private readonly Queue<char> _moves = [];
     private Position _robotPosition = null!;
 
@@ -43,19 +43,19 @@ public class Day15
             }
         }
 
-        _grid = grid.ToString().TrimEnd().ToTwoDimensionalArray<char>();
+        Grid = grid.ToString().TrimEnd().ToTwoDimensionalArray<char>();
     }
 
-    public void Tick()
+    public void Tick(char? move = null)
     {
-        _grid[_robotPosition.I, _robotPosition.J] = '.';
+        Grid.SetValueAt(_robotPosition, '.');
 
-        _robotPosition = Move(_robotPosition, _moves.Dequeue());
+        _robotPosition = Move(_robotPosition, move ?? _moves.Dequeue());
 
-        _grid[_robotPosition.I, _robotPosition.J] = '@';
+        Grid.SetValueAt(_robotPosition, '@');
     }
 
-    private Position Move(Position position, char move)
+    private protected virtual Position Move(Position position, char move)
     {
         Position next = null!;
         Position nextNext = null!;
@@ -80,19 +80,19 @@ public class Day15
                 break;
         }
 
-        if (_grid[next.I, next.J] == '#')
+        if (Grid.GetValueAt(next) == '#')
         {
             return position;
         }
 
-        if (_grid[next.I, next.J] == 'O')
+        if (Grid.GetValueAt(next) == 'O')
         {
             if (Move(next, move) == next)
             {
                 return position;
             }
 
-            _grid[nextNext.I, nextNext.J] = 'O';
+            Grid.SetValueAt(nextNext, 'O');
         }
 
         return next;
@@ -100,7 +100,7 @@ public class Day15
 
     public int GetGpsSum()
     {
-        return GetGpsSum(_grid);
+        return GetGpsSum(Grid);
     }
 
     public static int GetGpsSum(char[,] grid)
@@ -111,7 +111,7 @@ public class Day15
         {
             for (int j = 0; j <= grid.GetUpperBound(1); j++)
             {
-                if (grid[i, j] == 'O')
+                if (grid[i, j] == 'O' || grid[i, j] == '[')
                 {
                     sum += 100 * i + j;
                 }
@@ -125,11 +125,11 @@ public class Day15
     {
         StringBuilder result = new StringBuilder();
 
-        for (int i = 0; i <= _grid.GetUpperBound(0); i++)
+        for (int i = 0; i <= Grid.GetUpperBound(0); i++)
         {
-            for (int j = 0; j <= _grid.GetUpperBound(1); j++)
+            for (int j = 0; j <= Grid.GetUpperBound(1); j++)
             {
-                result.Append(_grid[i, j]);
+                result.Append(Grid[i, j]);
             }
 
             result.AppendLine();

@@ -38,6 +38,16 @@ public static class Extensions
         return result;
     }
 
+    internal static T GetValueAt<T>(this T[,] array, Position position)
+    {
+        return array[position.I, position.J];
+    }
+
+    internal static void SetValueAt<T>(this T[,] array, Position position, T value)
+    {
+        array[position.I, position.J] = value;
+    }
+
     public static T[][] GetPermutations<T>(this ICollection<T> list)
     {
         return GetPermutations(list, list.Count)
@@ -53,6 +63,7 @@ public static class Extensions
         }
 
         return GetPermutations(list, length - 1)
-            .SelectMany(permutation => list.Where(listItem => !permutation.Contains(listItem)), (permutation, listItem) => permutation.Concat([listItem]));
+            .SelectMany(permutation => list.Where(listItem => !permutation.Contains(listItem)),
+                (permutation, listItem) => permutation.Concat([listItem]));
     }
 }
