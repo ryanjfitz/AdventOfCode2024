@@ -20,14 +20,12 @@ public class Day15Part2(string input) : Day15(input)
     {
         if (Grid.GetValueAt(position.Top) == '[')
         {
-            Position top = position.Top;
-
-            if (Grid.GetValueAt(top.Top) == ']' && Grid.GetValueAt(top.Top.Right) == '#')
+            if (Grid.GetValueAt(position.Top.Top) == ']' && Grid.GetValueAt(position.Top.Top.Right) == '#')
             {
                 return position;
             }
 
-            while (Grid.GetValueAt(top.Top) == ']' && Grid.GetValueAt(top.Top.Right) == '[')
+            for (Position top = position.Top; Grid.GetValueAt(top.Top) == ']' && Grid.GetValueAt(top.Top.Right) == '['; top = top.Top)
             {
                 if (Grid.GetValueAt(top.Top.Top.Left) == '#')
                 {
@@ -38,8 +36,6 @@ public class Day15Part2(string input) : Day15(input)
                 {
                     return position;
                 }
-
-                top = top.Top;
             }
 
             if (Move(position.Top, move) == position.Top)
@@ -67,14 +63,12 @@ public class Day15Part2(string input) : Day15(input)
 
         if (Grid.GetValueAt(position.Top) == ']')
         {
-            Position top = position.Top;
-
-            if (Grid.GetValueAt(top.Top) == '[' && Grid.GetValueAt(top.Top.Left) == '#')
+            if (Grid.GetValueAt(position.Top.Top) == '[' && Grid.GetValueAt(position.Top.Top.Left) == '#')
             {
                 return position;
             }
 
-            while (Grid.GetValueAt(top.Top) == '[' && Grid.GetValueAt(top.Top.Left) == ']')
+            for (Position top = position.Top; Grid.GetValueAt(top.Top) == '[' && Grid.GetValueAt(top.Top.Left) == ']'; top = top.Top)
             {
                 if (Grid.GetValueAt(top.Top.Top.Right) == '#')
                 {
@@ -85,8 +79,6 @@ public class Day15Part2(string input) : Day15(input)
                 {
                     return position;
                 }
-
-                top = top.Top;
             }
 
             if (Move(position.Top, move) == position.Top)
@@ -124,14 +116,14 @@ public class Day15Part2(string input) : Day15(input)
     {
         if (Grid.GetValueAt(position.Bottom) == '[')
         {
-            Position bottom = position.Bottom;
-
-            if (Grid.GetValueAt(bottom.Bottom) == ']' && Grid.GetValueAt(bottom.Bottom.Right) == '#')
+            if (Grid.GetValueAt(position.Bottom.Bottom) == ']' && Grid.GetValueAt(position.Bottom.Bottom.Right) == '#')
             {
                 return position;
             }
 
-            while (Grid.GetValueAt(bottom.Bottom) == ']' && Grid.GetValueAt(bottom.Bottom.Right) == '[')
+            for (Position bottom = position.Bottom;
+                 Grid.GetValueAt(bottom.Bottom) == ']' && Grid.GetValueAt(bottom.Bottom.Right) == '[';
+                 bottom = bottom.Bottom)
             {
                 if (Grid.GetValueAt(bottom.Bottom.Bottom.Left) == '#')
                 {
@@ -142,8 +134,6 @@ public class Day15Part2(string input) : Day15(input)
                 {
                     return position;
                 }
-
-                bottom = bottom.Bottom;
             }
 
             if (Move(position.Bottom, move) == position.Bottom)
@@ -171,14 +161,14 @@ public class Day15Part2(string input) : Day15(input)
 
         if (Grid.GetValueAt(position.Bottom) == ']')
         {
-            Position bottom = position.Bottom;
-
-            if (Grid.GetValueAt(bottom.Bottom) == '[' && Grid.GetValueAt(bottom.Bottom.Left) == '#')
+            if (Grid.GetValueAt(position.Bottom.Bottom) == '[' && Grid.GetValueAt(position.Bottom.Bottom.Left) == '#')
             {
                 return position;
             }
 
-            while (Grid.GetValueAt(bottom.Bottom) == '[' && Grid.GetValueAt(bottom.Bottom.Left) == ']')
+            for (Position bottom = position.Bottom;
+                 Grid.GetValueAt(bottom.Bottom) == '[' && Grid.GetValueAt(bottom.Bottom.Left) == ']';
+                 bottom = bottom.Bottom)
             {
                 if (Grid.GetValueAt(bottom.Bottom.Bottom.Right) == '#')
                 {
@@ -189,8 +179,6 @@ public class Day15Part2(string input) : Day15(input)
                 {
                     return position;
                 }
-
-                bottom = bottom.Bottom;
             }
 
             if (Move(position.Bottom, move) == position.Bottom)
@@ -228,9 +216,7 @@ public class Day15Part2(string input) : Day15(input)
     {
         if (Grid.GetValueAt(position.Left) == ']')
         {
-            Move(position.Left.Left, move);
-
-            if (Grid.GetValueAt(position.Left.Left.Left) != '.')
+            if (Move(position.Left.Left, move) == position.Left.Left)
             {
                 return position;
             }
@@ -252,9 +238,7 @@ public class Day15Part2(string input) : Day15(input)
     {
         if (Grid.GetValueAt(position.Right) == '[')
         {
-            Move(position.Right.Right, move);
-
-            if (Grid.GetValueAt(position.Right.Right.Right) != '.')
+            if (Move(position.Right.Right, move) == position.Right.Right)
             {
                 return position;
             }
@@ -274,32 +258,16 @@ public class Day15Part2(string input) : Day15(input)
 
     public static string WidenInput2X(string input)
     {
-        StringBuilder result = new StringBuilder();
-
-        foreach (char c in input)
+        return string.Concat(input.Select<char, string>(c =>
         {
-            if (c == '#')
+            return c switch
             {
-                result.Append("##");
-            }
-            else if (c == 'O')
-            {
-                result.Append("[]");
-            }
-            else if (c == '.')
-            {
-                result.Append("..");
-            }
-            else if (c == '@')
-            {
-                result.Append("@.");
-            }
-            else
-            {
-                result.Append(c);
-            }
-        }
-
-        return result.ToString();
+                '#' => "##",
+                'O' => "[]",
+                '.' => "..",
+                '@' => "@.",
+                _ => c.ToString()
+            };
+        }));
     }
 }
