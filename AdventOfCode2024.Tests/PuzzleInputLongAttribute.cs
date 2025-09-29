@@ -11,7 +11,7 @@ public class PuzzleInputLongAttribute : DataSourceGeneratorAttribute<string, lon
         _expected = expected;
     }
 
-    public override IEnumerable<Func<(string, long)>> GenerateDataSources(DataGeneratorMetadata dataGeneratorMetadata)
+    protected override IEnumerable<Func<(string, long)>> GenerateDataSources(DataGeneratorMetadata dataGeneratorMetadata)
     {
         yield return () => (_puzzleInput, _expected);
     }

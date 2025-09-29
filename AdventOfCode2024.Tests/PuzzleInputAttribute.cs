@@ -11,7 +11,7 @@ public class PuzzleInputAttribute : DataSourceGeneratorAttribute<string, int>
         _expected = expected;
     }
 
-    public override IEnumerable<Func<(string, int)>> GenerateDataSources(DataGeneratorMetadata dataGeneratorMetadata)
+    protected override IEnumerable<Func<(string, int)>> GenerateDataSources(DataGeneratorMetadata dataGeneratorMetadata)
     {
         yield return () => (_puzzleInput, _expected);
     }

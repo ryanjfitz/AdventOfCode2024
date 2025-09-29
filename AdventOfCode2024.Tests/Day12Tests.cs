@@ -167,7 +167,6 @@ public class Day12Tests
 
     [Test]
     [MethodDataSource(nameof(GetRegionData))]
-    [JsonDisplayName]
     public async Task GetRegions(string input, IEnumerable<Region> expected)
     {
         await Assert.That(Day12.GetRegions(input)).IsEquivalentTo(expected, CollectionOrdering.Any);
@@ -237,13 +236,5 @@ public class Day12Tests
     public async Task GetBulkDiscountPrice(string input, int expected)
     {
         await Assert.That(Day12.GetBulkDiscountPrice(input)).IsEqualTo(expected);
-    }
-
-    internal class JsonDisplayName : DisplayNameFormatterAttribute
-    {
-        protected override string FormatDisplayName(TestContext testContext)
-        {
-            return JsonSerializer.Serialize(testContext.TestDetails.TestMethodArguments);
-        }
     }
 }
