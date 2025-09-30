@@ -7,26 +7,38 @@ public static class PuzzleInputDownloader
     {
         const string aocSessionCookie = ""; // Put your adventofcode.com session cookie here.
 
-        for (int day = 1; day <= 25; day++)
+        HttpClient? httpClient = null;
+
+        try
         {
-            if (File.Exists($"Day{day}.txt"))
+            for (int day = 1; day <= 25; day++)
             {
-                continue;
+                if (File.Exists($"Day{day}.txt"))
+                {
+                    continue;
+                }
+
+                if (string.IsNullOrWhiteSpace(aocSessionCookie))
+                {
+                    throw new Exception("adventofcode.com session cookie not set.");
+                }
+
+                if (httpClient == null)
+                {
+                    httpClient = new HttpClient();
+                    httpClient.DefaultRequestHeaders.Add("Cookie", $"session={aocSessionCookie}");
+                }
+
+                var response = await httpClient.GetAsync($"https://adventofcode.com/2024/day/{day}/input");
+                response.EnsureSuccessStatusCode();
+
+                var puzzleInput = (await response.Content.ReadAsStringAsync()).TrimEnd().ReplaceLineEndings();
+                await File.WriteAllTextAsync($"Day{day}.txt", puzzleInput);
             }
-
-            if (string.IsNullOrWhiteSpace(aocSessionCookie))
-            {
-                throw new Exception("adventofcode.com session cookie not set.");
-            }
-
-            var httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Add("Cookie", $"session={aocSessionCookie}");
-
-            var response = await httpClient.GetAsync($"https://adventofcode.com/2024/day/{day}/input");
-            response.EnsureSuccessStatusCode();
-
-            var puzzleInput = (await response.Content.ReadAsStringAsync()).TrimEnd().ReplaceLineEndings();
-            await File.WriteAllTextAsync($"Day{day}.txt", puzzleInput);
+        }
+        finally
+        {
+            httpClient?.Dispose();
         }
     }
 }
