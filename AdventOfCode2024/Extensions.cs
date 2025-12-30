@@ -1,10 +1,12 @@
+using System.Drawing;
+
 namespace AdventOfCode2024;
 
 public static class Extensions
 {
-    public static T[] RemoveAt<T>(this T[] array, int i)
+    public static IEnumerable<T> RemoveAt<T>(this IEnumerable<T> enumerable, int index)
     {
-        return array.Where((_, index) => index != i).ToArray();
+        return enumerable.Where((_, i) => i != index);
     }
 
     public static T[,] ToTwoDimensionalArray<T>(this string input)
@@ -38,14 +40,17 @@ public static class Extensions
         return result;
     }
 
-    internal static T GetValueAt<T>(this T[,] array, Position position)
+    extension<T>(T[,] array)
     {
-        return array[position.I, position.J];
-    }
+        internal T GetValueAt(Point position)
+        {
+            return array[position.X, position.Y];
+        }
 
-    internal static void SetValueAt<T>(this T[,] array, Position position, T value)
-    {
-        array[position.I, position.J] = value;
+        internal void SetValueAt(Point position, T value)
+        {
+            array[position.X, position.Y] = value;
+        }
     }
 
     public static T[][] GetPermutations<T>(this ICollection<T> list)
@@ -65,5 +70,34 @@ public static class Extensions
         return GetPermutations(list, length - 1)
             .SelectMany(permutation => list.Where(listItem => !permutation.Contains(listItem)),
                 (permutation, listItem) => permutation.Concat([listItem]));
+    }
+
+    extension(Point point)
+    {
+        public static Point operator +(Point a, Point b)
+        {
+            return new Point(a.X + b.X, a.Y + b.Y);
+        }
+
+        public static Point operator -(Point a, Point b)
+        {
+            return new Point(a.X - b.X, a.Y - b.Y);
+        }
+
+        public Point Top => point with { X = point.X - 1 };
+
+        public Point Bottom => point with { X = point.X + 1 };
+
+        public Point Left => point with { Y = point.Y - 1 };
+
+        public Point Right => point with { Y = point.Y + 1 };
+
+        public bool IsWithinBounds<T>(T[,] grid)
+        {
+            return point.X >= grid.GetLowerBound(0) &&
+                   point.Y >= grid.GetLowerBound(1) &&
+                   point.X <= grid.GetUpperBound(0) &&
+                   point.Y <= grid.GetUpperBound(1);
+        }
     }
 }

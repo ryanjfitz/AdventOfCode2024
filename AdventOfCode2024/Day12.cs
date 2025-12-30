@@ -1,3 +1,5 @@
+using System.Drawing;
+
 namespace AdventOfCode2024;
 
 public static class Day12
@@ -6,7 +8,7 @@ public static class Day12
     {
         var results = new List<Region>();
 
-        var cache = new HashSet<Position>();
+        var cache = new HashSet<Point>();
 
         var grid = input.ToTwoDimensionalArray<char>();
 
@@ -14,7 +16,7 @@ public static class Day12
         {
             for (int j = 0; j <= grid.GetUpperBound(1); j++)
             {
-                Position currentPosition = new Position(i, j);
+                Point currentPosition = new Point(i, j);
 
                 char plantType = grid[i, j];
 
@@ -41,13 +43,13 @@ public static class Day12
         return results;
     }
 
-    private static int GetSides(HashSet<Position> positions)
+    private static int GetSides(HashSet<Point> positions)
     {
-        var squaredPositions = new HashSet<Position>();
+        var squaredPositions = new HashSet<Point>();
 
         foreach (var position in positions)
         {
-            var newPosition = new Position(position.I * 2, position.J * 2);
+            var newPosition = new Point(position.X * 2, position.Y * 2);
 
             squaredPositions.Add(newPosition);
             squaredPositions.Add(newPosition.Right);
@@ -58,7 +60,7 @@ public static class Day12
         return squaredPositions.Count(position => IsCorner(squaredPositions, position));
     }
 
-    private static bool IsCorner(HashSet<Position> squaredPositions, Position position)
+    private static bool IsCorner(HashSet<Point> squaredPositions, Point position)
     {
         int neighborCount = 0;
 
@@ -105,7 +107,7 @@ public static class Day12
         return neighborCount is 3 or 4 or 7;
     }
 
-    private static int GetPerimeter(HashSet<Position> positions)
+    private static int GetPerimeter(HashSet<Point> positions)
     {
         int total = 0;
 
@@ -140,11 +142,11 @@ public static class Day12
     }
 
     private static int GetArea(
-        Position currentPosition,
+        Point currentPosition,
         char[,] grid,
         char plantType,
-        HashSet<Position> cache,
-        out HashSet<Position> traveledPositions)
+        HashSet<Point> cache,
+        out HashSet<Point> traveledPositions)
     {
         traveledPositions = [];
 
@@ -156,37 +158,37 @@ public static class Day12
 
         int result = 0;
 
-        if (currentPosition.IsWithinBounds(grid) && grid[currentPosition.I, currentPosition.J] == plantType)
+        if (currentPosition.IsWithinBounds(grid) && grid[currentPosition.X, currentPosition.Y] == plantType)
         {
             result += 1;
             traveledPositions.Add(currentPosition);
             cache.Add(currentPosition);
         }
 
-        Position top = currentPosition.Top;
-        Position bottom = currentPosition.Bottom;
-        Position left = currentPosition.Left;
-        Position right = currentPosition.Right;
+        Point top = currentPosition.Top;
+        Point bottom = currentPosition.Bottom;
+        Point left = currentPosition.Left;
+        Point right = currentPosition.Right;
 
-        if (top.IsWithinBounds(grid) && grid[top.I, top.J] == plantType)
+        if (top.IsWithinBounds(grid) && grid[top.X, top.Y] == plantType)
         {
             result += GetArea(top, grid, plantType, cache, out var positions);
             traveledPositions.UnionWith(positions);
         }
 
-        if (bottom.IsWithinBounds(grid) && grid[bottom.I, bottom.J] == plantType)
+        if (bottom.IsWithinBounds(grid) && grid[bottom.X, bottom.Y] == plantType)
         {
             result += GetArea(bottom, grid, plantType, cache, out var positions);
             traveledPositions.UnionWith(positions);
         }
 
-        if (left.IsWithinBounds(grid) && grid[left.I, left.J] == plantType)
+        if (left.IsWithinBounds(grid) && grid[left.X, left.Y] == plantType)
         {
             result += GetArea(left, grid, plantType, cache, out var positions);
             traveledPositions.UnionWith(positions);
         }
 
-        if (right.IsWithinBounds(grid) && grid[right.I, right.J] == plantType)
+        if (right.IsWithinBounds(grid) && grid[right.X, right.Y] == plantType)
         {
             result += GetArea(right, grid, plantType, cache, out var positions);
             traveledPositions.UnionWith(positions);
