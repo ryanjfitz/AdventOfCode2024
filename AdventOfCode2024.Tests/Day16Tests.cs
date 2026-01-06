@@ -4,7 +4,7 @@ namespace AdventOfCode2024.Tests;
 
 public class Day16Tests
 {
-    public static IEnumerable<Func<(string, Point[])>> GetData()
+    public static IEnumerable<Func<(string, Point[])>> OnePathData()
     {
         yield return () => ("""
                             ####
@@ -53,30 +53,6 @@ public class Day16Tests
                             ###
                             """, [new Point(3, 1), new Point(2, 1), new Point(1, 1)]);
         yield return () => ("""
-                            #####
-                            #S#E#
-                            #####
-                            """, []);
-        yield return () => ("""
-                            #####
-                            #E#S#
-                            #####
-                            """, []);
-        yield return () => ("""
-                            ###
-                            #S#
-                            ###
-                            #E#
-                            ###
-                            """, []);
-        yield return () => ("""
-                            ###
-                            #E#
-                            ###
-                            #S#
-                            ###
-                            """, []);
-        yield return () => ("""
                             ####
                             ##E#
                             #S.#
@@ -106,11 +82,86 @@ public class Day16Tests
                             ##.E#
                             #####
                             """, [new Point(1, 1), new Point(1, 2), new Point(2, 2), new Point(2, 3)]);
+        yield return () => ("""
+                            #####
+                            ##.S#
+                            #E.##
+                            #####
+                            """, [new Point(1, 3), new Point(1, 2), new Point(2, 2), new Point(2, 1)]);
+        yield return () => ("""
+                            #####
+                            #E.##
+                            ##.S#
+                            #####
+                            """, [new Point(2, 3), new Point(2, 2), new Point(1, 2), new Point(1, 1)]);
+        yield return () => ("""
+                            #####
+                            ##.E#
+                            #S.##
+                            #####
+                            """, [new Point(2, 1), new Point(2, 2), new Point(1, 2), new Point(1, 3)]);
     }
 
     [Test]
-    [MethodDataSource(nameof(GetData))]
-    public async Task Should_return_paths_to_goal(string input, Point[] expected)
+    [MethodDataSource(nameof(OnePathData))]
+    public async Task Should_return_only_path_to_goal(string input, Point[] expected)
+    {
+        await Assert.That(Day16.GetPaths(input)).IsEquivalentTo(expected);
+    }
+
+    public static IEnumerable<Func<(string, Point[])>> NoPathsData()
+    {
+        yield return () => ("""
+                            #####
+                            #S#E#
+                            #####
+                            """, []);
+        yield return () => ("""
+                            #####
+                            #E#S#
+                            #####
+                            """, []);
+        yield return () => ("""
+                            ###
+                            #S#
+                            ###
+                            #E#
+                            ###
+                            """, []);
+        yield return () => ("""
+                            ###
+                            #E#
+                            ###
+                            #S#
+                            ###
+                            """, []);
+    }
+
+    [Test]
+    [MethodDataSource(nameof(NoPathsData))]
+    public async Task Should_return_no_paths_to_goal(string input, Point[] expected)
+    {
+        await Assert.That(Day16.GetPaths(input)).IsEquivalentTo(expected);
+    }
+
+    public static IEnumerable<Func<(string, Point[][])>> MultiplePathsData()
+    {
+        yield return () => ("""
+                            #####
+                            #...#
+                            #S#E#
+                            #...#
+                            #####
+                            """,
+        [
+            [new Point(2, 1), new Point(1, 1), new Point(1, 2), new Point(1, 3), new Point(2, 3)],
+            [new Point(2, 1), new Point(3, 1), new Point(3, 2), new Point(3, 3), new Point(2, 3)]
+        ]);
+    }
+
+    [Test]
+    [MethodDataSource(nameof(MultiplePathsData))]
+    public async Task Should_return_multiple_paths_to_goal(string input, Point[][] expected)
     {
         await Assert.That(Day16.GetPaths(input)).IsEquivalentTo(expected);
     }

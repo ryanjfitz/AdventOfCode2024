@@ -14,57 +14,65 @@ public static class Day16
 
         var positions = new HashSet<Point>();
 
-        Point currentPosition;
         Point lastPosition = default;
 
-        for (currentPosition = startPosition; currentPosition.Y <= endPosition.Y; currentPosition = currentPosition.Right)
+        while (!positions.Contains(endPosition))
         {
-            if (grid.GetValueAt(currentPosition) == '#')
+            for (var currentPosition = positions.Count > 0 ? lastPosition : startPosition;
+                 currentPosition.Y <= endPosition.Y;
+                 currentPosition = currentPosition.Right)
             {
-                wallEncountered = true;
-                continue;
+                if (grid.GetValueAt(currentPosition) == '#')
+                {
+                    wallEncountered = true;
+                    continue;
+                }
+
+                lastPosition = currentPosition;
+                positions.Add(currentPosition);
             }
 
-            lastPosition = currentPosition;
-            positions.Add(currentPosition);
-        }
-
-        for (currentPosition = startPosition; currentPosition.Y >= endPosition.Y; currentPosition = currentPosition.Left)
-        {
-            if (grid.GetValueAt(currentPosition) == '#')
+            for (var currentPosition = positions.Count > 0 ? lastPosition : startPosition;
+                 currentPosition.Y >= endPosition.Y;
+                 currentPosition = currentPosition.Left)
             {
-                wallEncountered = true;
-                continue;
+                if (grid.GetValueAt(currentPosition) == '#')
+                {
+                    wallEncountered = true;
+                    continue;
+                }
+
+                lastPosition = currentPosition;
+                positions.Add(currentPosition);
             }
 
-            lastPosition = currentPosition;
-            positions.Add(currentPosition);
-        }
-
-        for (currentPosition = !positions.Contains(endPosition) ? lastPosition : startPosition;
-             currentPosition.X <= endPosition.X;
-             currentPosition = currentPosition.Bottom)
-        {
-            if (grid.GetValueAt(currentPosition) == '#')
+            for (var currentPosition = positions.Count > 0 ? lastPosition : startPosition;
+                 currentPosition.X <= endPosition.X;
+                 currentPosition = currentPosition.Bottom)
             {
-                wallEncountered = true;
-                continue;
+                if (grid.GetValueAt(currentPosition) == '#')
+                {
+                    wallEncountered = true;
+                    continue;
+                }
+
+                lastPosition = currentPosition;
+                positions.Add(currentPosition);
             }
 
-            positions.Add(currentPosition);
-        }
-
-        for (currentPosition = !positions.Contains(endPosition) ? lastPosition : startPosition;
-             currentPosition.X >= endPosition.X;
-             currentPosition = currentPosition.Top)
-        {
-            if (grid.GetValueAt(currentPosition) == '#')
+            for (var currentPosition = positions.Count > 0 ? lastPosition : startPosition;
+                 currentPosition.X >= endPosition.X;
+                 currentPosition = currentPosition.Top)
             {
-                wallEncountered = true;
-                continue;
-            }
+                if (grid.GetValueAt(currentPosition) == '#')
+                {
+                    wallEncountered = true;
+                    continue;
+                }
 
-            positions.Add(currentPosition);
+                lastPosition = currentPosition;
+                positions.Add(currentPosition);
+            }
         }
 
         if (wallEncountered && positions.Count == 2 && positions.First() == startPosition && positions.Last() == endPosition)
