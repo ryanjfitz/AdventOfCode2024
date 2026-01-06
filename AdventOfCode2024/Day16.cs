@@ -4,7 +4,7 @@ namespace AdventOfCode2024;
 
 public static class Day16
 {
-    public static IReadOnlyCollection<Point> GetPaths(string input)
+    public static Point[][] GetPaths(string input)
     {
         var grid = input.ToTwoDimensionalArray<char>();
 
@@ -80,7 +80,7 @@ public static class Day16
             positions.Clear();
         }
 
-        return positions;
+        return [positions.ToArray()];
     }
 
     private static (Point startPosition, Point endPosition) GetStartAndEndPositions(char[,] grid)

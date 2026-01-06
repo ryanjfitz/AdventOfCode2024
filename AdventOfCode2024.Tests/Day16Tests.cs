@@ -106,42 +106,37 @@ public class Day16Tests
     [MethodDataSource(nameof(OnePathData))]
     public async Task Should_return_only_path_to_goal(string input, Point[] expected)
     {
-        await Assert.That(Day16.GetPaths(input)).IsEquivalentTo(expected);
-    }
-
-    public static IEnumerable<Func<(string, Point[])>> NoPathsData()
-    {
-        yield return () => ("""
-                            #####
-                            #S#E#
-                            #####
-                            """, []);
-        yield return () => ("""
-                            #####
-                            #E#S#
-                            #####
-                            """, []);
-        yield return () => ("""
-                            ###
-                            #S#
-                            ###
-                            #E#
-                            ###
-                            """, []);
-        yield return () => ("""
-                            ###
-                            #E#
-                            ###
-                            #S#
-                            ###
-                            """, []);
+        await Assert.That(Day16.GetPaths(input)[0]).IsEquivalentTo(expected);
     }
 
     [Test]
-    [MethodDataSource(nameof(NoPathsData))]
-    public async Task Should_return_no_paths_to_goal(string input, Point[] expected)
+    [Arguments("""
+               #####
+               #S#E#
+               #####
+               """)]
+    [Arguments("""
+               #####
+               #E#S#
+               #####
+               """)]
+    [Arguments("""
+               ###
+               #S#
+               ###
+               #E#
+               ###
+               """)]
+    [Arguments("""
+               ###
+               #E#
+               ###
+               #S#
+               ###
+               """)]
+    public async Task Should_return_no_paths_to_goal(string input)
     {
-        await Assert.That(Day16.GetPaths(input)).IsEquivalentTo(expected);
+        await Assert.That(Day16.GetPaths(input)).IsEquivalentTo([Array.Empty<Point>()]);
     }
 
     public static IEnumerable<Func<(string, Point[][])>> MultiplePathsData()
