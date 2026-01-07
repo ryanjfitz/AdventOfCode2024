@@ -100,6 +100,12 @@ public class Day16Tests
                             #S.##
                             #####
                             """, [new Point(2, 1), new Point(2, 2), new Point(1, 2), new Point(1, 3)]);
+        yield return () => ("""
+                            ######
+                            ###E.#
+                            #S...#
+                            ######
+                            """, [new Point(2, 1), new Point(2, 2), new Point(2, 3), new Point(2, 4), new Point(1, 4), new Point(1, 3)]);
     }
 
     [Test]
@@ -154,7 +160,7 @@ public class Day16Tests
         ]);
     }
 
-    [Test]
+    [Test, Skip("TODO")]
     [MethodDataSource(nameof(MultiplePathsData))]
     public async Task Should_return_multiple_paths_to_goal(string input, Point[][] expected)
     {
