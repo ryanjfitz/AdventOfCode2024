@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using System.Drawing;
 
 namespace AdventOfCode2024;
 
@@ -27,7 +28,7 @@ public static class Day8
                 {
                     char frequency = grid[i, j];
 
-                    antennas.GetOrAdd(frequency, _ => new Antenna(frequency, [])).Positions.Add(new Position(i, j));
+                    antennas.GetOrAdd(frequency, _ => new Antenna(frequency, [])).Positions.Add(new Point(i, j));
                 }
             }
         }
@@ -35,9 +36,9 @@ public static class Day8
         return antennas.Values;
     }
 
-    private static IEnumerable<Position> GetAntinodes(char[,] grid, IEnumerable<Antenna> antennas, bool part2 = false)
+    private static IEnumerable<Point> GetAntinodes(char[,] grid, IEnumerable<Antenna> antennas, bool part2 = false)
     {
-        HashSet<Position> antinodes = [];
+        HashSet<Point> antinodes = [];
 
         foreach (var antenna in antennas)
         {
@@ -45,13 +46,13 @@ public static class Day8
             {
                 for (int i = 0; i < antennaPositions.Length - 1; i++)
                 {
-                    Position antennaPositionOne = antennaPositions[i];
-                    Position antennaPositionTwo = antennaPositions[i + 1];
-                    Position diff = antennaPositionTwo - antennaPositionOne;
+                    Point antennaPositionOne = antennaPositions[i];
+                    Point antennaPositionTwo = antennaPositions[i + 1];
+                    Point diff = antennaPositionTwo - antennaPositionOne;
 
                     if (part2)
                     {
-                        Position antinode = antennaPositionOne;
+                        Point antinode = antennaPositionOne;
                         while (antinode.IsWithinBounds(grid))
                         {
                             antinodes.Add(antinode);
@@ -61,7 +62,7 @@ public static class Day8
                     }
                     else
                     {
-                        Position antinode = antennaPositionOne - diff;
+                        Point antinode = antennaPositionOne - diff;
                         if (antinode.IsWithinBounds(grid))
                         {
                             antinodes.Add(antinode);
@@ -74,5 +75,5 @@ public static class Day8
         return antinodes;
     }
 
-    private record Antenna(char Frequency, IList<Position> Positions);
+    private record Antenna(char Frequency, IList<Point> Positions);
 }

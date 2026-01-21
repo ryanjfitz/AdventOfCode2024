@@ -5,7 +5,7 @@ public static class PuzzleInputDownloader
     [Before(TestDiscovery)]
     public static async Task Download()
     {
-        const string aocSessionCookie = ""; // Put your adventofcode.com session cookie here.
+        var aocSession = Environment.GetEnvironmentVariable("AOC_SESSION");
 
         HttpClient? httpClient = null;
 
@@ -18,15 +18,15 @@ public static class PuzzleInputDownloader
                     continue;
                 }
 
-                if (string.IsNullOrWhiteSpace(aocSessionCookie))
+                if (string.IsNullOrWhiteSpace(aocSession))
                 {
-                    throw new Exception("adventofcode.com session cookie not set.");
+                    throw new Exception("adventofcode.com puzzle inputs cannot be downloaded due to missing session.");
                 }
 
                 if (httpClient == null)
                 {
                     httpClient = new HttpClient();
-                    httpClient.DefaultRequestHeaders.Add("Cookie", $"session={aocSessionCookie}");
+                    httpClient.DefaultRequestHeaders.Add("Cookie", $"session={aocSession}");
                 }
 
                 var response = await httpClient.GetAsync($"https://adventofcode.com/2024/day/{day}/input");

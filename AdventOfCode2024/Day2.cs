@@ -2,57 +2,52 @@ namespace AdventOfCode2024;
 
 public static class Day2
 {
-    public static bool IsSafe(int[] report, bool useProblemDampener = false)
+    public static bool IsSafe(IReadOnlyList<int> report, bool useProblemDampener = false)
     {
         Direction? lastDirection = null;
 
-        for (int level = 0; level < report.Length - 1; level++)
+        for (int level = 0; level < report.Count - 1; level++)
         {
             int diff = report[level] - report[level + 1];
 
-            if (diff == 0)
+            if (!IsSafe(diff, ref lastDirection))
             {
-                if (useProblemDampener)
-                {
-                    return IsSafeWithoutLevel(report, level);
-                }
-
-                return false;
-            }
-
-            Direction direction = int.IsNegative(diff) ? Direction.Ascending : Direction.Descending;
-
-            if (direction != lastDirection && lastDirection != null)
-            {
-                if (useProblemDampener)
-                {
-                    return IsSafeWithoutLevel(report, level);
-                }
-
-                return false;
-            }
-
-            lastDirection = direction;
-
-            if (Math.Abs(diff) > 3)
-            {
-                if (useProblemDampener)
-                {
-                    return IsSafeWithoutLevel(report, level);
-                }
-
-                return false;
+                return useProblemDampener && IsSafeWithoutLevel(report, level);
             }
         }
 
         return true;
     }
 
-    private static bool IsSafeWithoutLevel(int[] report, int level)
+    private static bool IsSafe(int diff, ref Direction? lastDirection)
     {
-        return level >= 0 && IsSafe(report.RemoveAt(level), useProblemDampener: false) ||
-               level + 1 >= 0 && IsSafe(report.RemoveAt(level + 1), useProblemDampener: false) ||
-               level - 1 >= 0 && IsSafe(report.RemoveAt(level - 1), useProblemDampener: false);
+        if (diff == 0)
+        {
+            return false;
+        }
+
+        Direction direction = int.IsNegative(diff) ? Direction.Ascending : Direction.Descending;
+
+        if (direction != lastDirection && lastDirection != null)
+        {
+            return false;
+        }
+
+        lastDirection = direction;
+
+        if (Math.Abs(diff) > 3)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    private static bool IsSafeWithoutLevel(IReadOnlyList<int> report, int level)
+    {
+        return IsSafe(report.RemoveAt(level).ToList(), useProblemDampener: false) ||
+               IsSafe(report.RemoveAt(level + 1).ToList(), useProblemDampener: false) ||
+               IsSafe(report.RemoveAt(level - 1).ToList(), useProblemDampener: false);
     }
 
     private enum Direction
@@ -64,10 +59,10 @@ public static class Day2
     public static int GetNumberOfSafeReports(string input, bool useProblemDampener = false)
     {
         var reports = ParseInput(input);
-        
+
         return reports.Count(report => IsSafe(report, useProblemDampener));
     }
-    
+
     private static IEnumerable<int[]> ParseInput(string input)
     {
         var lines = input.Split(Environment.NewLine);
