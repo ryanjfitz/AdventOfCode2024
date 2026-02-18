@@ -124,6 +124,11 @@ public class Day16Tests
                #####
                """)]
     [Arguments("""
+               #######
+               #S # E#
+               #######
+               """)]
+    [Arguments("""
                #####
                #E#S#
                #####
@@ -142,9 +147,9 @@ public class Day16Tests
                #S#
                ###
                """)]
-    public async Task Should_return_no_paths_to_goal(string input)
+    public void Should_return_no_paths_to_goal(string input)
     {
-        await Assert.That(Day16.GetPaths(input)).IsEquivalentTo([Array.Empty<Point>()]);
+        Day16.GetPaths(input).Should().BeEquivalentTo([Array.Empty<Point>()]);
     }
 
     public static IEnumerable<Func<(string, Point[][])>> MultiplePathsData()
