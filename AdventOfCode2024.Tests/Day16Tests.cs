@@ -121,7 +121,7 @@ public class Day16Tests
     [MethodDataSource(nameof(OnePathData))]
     public void Should_return_only_path_to_goal(string input, Point[] expected)
     {
-        Day16.GetPaths(input).Should().ContainSingle().Which.Should().BeEquivalentTo(expected);
+        new Day16(input).GetPaths().Should().ContainSingle().Which.Should().BeEquivalentTo(expected);
     }
 
     [Test]
@@ -156,7 +156,7 @@ public class Day16Tests
                """)]
     public void Should_return_no_paths_to_goal(string input)
     {
-        Day16.GetPaths(input).Should().BeEquivalentTo(Array.Empty<Point[]>());
+        new Day16(input).GetPaths().Should().BeEquivalentTo(Array.Empty<Point[]>());
     }
 
     public static IEnumerable<Func<(string, Point[][])>> MultiplePathsData()
@@ -178,6 +178,6 @@ public class Day16Tests
     [MethodDataSource(nameof(MultiplePathsData))]
     public void Should_return_multiple_paths_to_goal(string input, Point[][] expected)
     {
-        Day16.GetPaths(input).Should().BeEquivalentTo(expected);
+        new Day16(input).GetPaths().Should().BeEquivalentTo(expected);
     }
 }

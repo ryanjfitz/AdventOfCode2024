@@ -2,18 +2,26 @@ using System.Drawing;
 
 namespace AdventOfCode2024;
 
-public static class Day16
+public class Day16
 {
-    public static Point[][] GetPaths(string input)
+    private readonly char[,] _grid;
+    private readonly Point _startPosition;
+    private readonly Point _endPosition;
+    private Point _lastPosition;
+
+    public Day16(string input)
     {
-        var grid = input.ToTwoDimensionalArray<char>();
+        _grid = input.ToTwoDimensionalArray<char>();
 
-        var (startPosition, endPosition) = GetStartAndEndPositions(grid);
+        (_startPosition, _endPosition) = GetStartAndEndPositions(_grid);
+    }
 
+    public Point[][] GetPaths()
+    {
         var paths = new HashSet<HashSet<Point>>(new PathEqualityComparer())
         {
-            GetPath(grid, startPosition, endPosition),
-            GetPath2(grid, startPosition, endPosition)
+            GetPath(),
+            GetPath2()
         };
 
         return paths.All(p => p.Count == 0)
@@ -21,9 +29,9 @@ public static class Day16
             : paths.Select(p => p.ToArray()).ToArray();
     }
 
-    private static HashSet<Point> GetPath(char[,] grid, Point startPosition, Point endPosition)
+    private HashSet<Point> GetPath()
     {
-        var lastPosition = startPosition;
+        _lastPosition = _startPosition;
 
         var path = new HashSet<Point>();
 
@@ -33,16 +41,16 @@ public static class Day16
         {
             lastPath = path.ToArray();
 
-            For(p => p.Y <= grid.GetUpperBound(1), (ref p) => p = p.Right, ref lastPosition, grid, path, endPosition);
+            For(p => p.Y <= _grid.GetUpperBound(1), (ref p) => p = p.Right, path);
 
-            For(p => p.Y >= grid.GetLowerBound(1), (ref p) => p = p.Left, ref lastPosition, grid, path, endPosition);
+            For(p => p.Y >= _grid.GetLowerBound(1), (ref p) => p = p.Left, path);
 
-            For(p => p.X <= grid.GetUpperBound(0), (ref p) => p = p.Bottom, ref lastPosition, grid, path, endPosition);
+            For(p => p.X <= _grid.GetUpperBound(0), (ref p) => p = p.Bottom, path);
 
-            For(p => p.X >= grid.GetLowerBound(0), (ref p) => p = p.Top, ref lastPosition, grid, path, endPosition);
+            For(p => p.X >= _grid.GetLowerBound(0), (ref p) => p = p.Top, path);
         } while (!path.SetEquals(lastPath));
 
-        if (!path.Contains(endPosition))
+        if (!path.Contains(_endPosition))
         {
             path.Clear();
         }
@@ -59,9 +67,9 @@ public static class Day16
         return path;
     }
 
-    private static HashSet<Point> GetPath2(char[,] grid, Point startPosition, Point endPosition)
+    private HashSet<Point> GetPath2()
     {
-        var lastPosition = startPosition;
+        _lastPosition = _startPosition;
 
         var path = new HashSet<Point>();
 
@@ -71,16 +79,16 @@ public static class Day16
         {
             lastPath = path.ToArray();
 
-            For(p => p.X >= grid.GetLowerBound(0), (ref p) => p = p.Top, ref lastPosition, grid, path, endPosition);
+            For(p => p.X >= _grid.GetLowerBound(0), (ref p) => p = p.Top, path);
 
-            For(p => p.X <= grid.GetUpperBound(0), (ref p) => p = p.Bottom, ref lastPosition, grid, path, endPosition);
+            For(p => p.X <= _grid.GetUpperBound(0), (ref p) => p = p.Bottom, path);
 
-            For(p => p.Y >= grid.GetLowerBound(1), (ref p) => p = p.Left, ref lastPosition, grid, path, endPosition);
+            For(p => p.Y >= _grid.GetLowerBound(1), (ref p) => p = p.Left, path);
 
-            For(p => p.Y <= grid.GetUpperBound(1), (ref p) => p = p.Right, ref lastPosition, grid, path, endPosition);
+            For(p => p.Y <= _grid.GetUpperBound(1), (ref p) => p = p.Right, path);
         } while (!path.SetEquals(lastPath));
 
-        if (!path.Contains(endPosition))
+        if (!path.Contains(_endPosition))
         {
             path.Clear();
         }
@@ -97,22 +105,21 @@ public static class Day16
         return path;
     }
 
-    private static void For(Func<Point, bool> condition, RefAction<Point> iterator, ref Point lastPosition, char[,] grid, HashSet<Point> path,
-        Point endPosition)
+    private void For(Func<Point, bool> condition, RefAction<Point> iterator, HashSet<Point> path)
     {
-        for (var currentPosition = lastPosition; condition(currentPosition); iterator(ref currentPosition))
+        for (var currentPosition = _lastPosition; condition(currentPosition); iterator(ref currentPosition))
         {
-            if (grid.GetValueAt(currentPosition) == '#')
+            if (_grid.GetValueAt(currentPosition) == '#')
             {
                 break;
             }
 
-            if (!path.Add(currentPosition) && currentPosition != lastPosition || currentPosition == endPosition)
+            if (!path.Add(currentPosition) && currentPosition != _lastPosition || currentPosition == _endPosition)
             {
                 break;
             }
 
-            lastPosition = currentPosition;
+            _lastPosition = currentPosition;
         }
     }
 
