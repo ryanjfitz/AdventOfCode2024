@@ -1,10 +1,10 @@
-using System.Text;
+using System.Drawing;
 
 namespace AdventOfCode2024;
 
 public class Day15Part2(string input) : Day15(input)
 {
-    private protected override Position Move(Position position, char move)
+    private protected override Point Move(Point position, char move)
     {
         return move switch
         {
@@ -16,7 +16,7 @@ public class Day15Part2(string input) : Day15(input)
         };
     }
 
-    private Position MoveUp(Position position, char move)
+    private Point MoveUp(Point position, char move)
     {
         if (Grid.GetValueAt(position.Top) == '[')
         {
@@ -25,7 +25,7 @@ public class Day15Part2(string input) : Day15(input)
                 return position;
             }
 
-            for (Position top = position.Top; Grid.GetValueAt(top.Top) == ']' && Grid.GetValueAt(top.Top.Right) == '['; top = top.Top)
+            for (Point top = position.Top; Grid.GetValueAt(top.Top) == ']' && Grid.GetValueAt(top.Top.Right) == '['; top = top.Top)
             {
                 if (Grid.GetValueAt(top.Top.Top.Left) == '#')
                 {
@@ -68,7 +68,7 @@ public class Day15Part2(string input) : Day15(input)
                 return position;
             }
 
-            for (Position top = position.Top; Grid.GetValueAt(top.Top) == '[' && Grid.GetValueAt(top.Top.Left) == ']'; top = top.Top)
+            for (Point top = position.Top; Grid.GetValueAt(top.Top) == '[' && Grid.GetValueAt(top.Top.Left) == ']'; top = top.Top)
             {
                 if (Grid.GetValueAt(top.Top.Top.Right) == '#')
                 {
@@ -112,7 +112,7 @@ public class Day15Part2(string input) : Day15(input)
         return position.Top;
     }
 
-    private Position MoveDown(Position position, char move)
+    private Point MoveDown(Point position, char move)
     {
         if (Grid.GetValueAt(position.Bottom) == '[')
         {
@@ -121,7 +121,7 @@ public class Day15Part2(string input) : Day15(input)
                 return position;
             }
 
-            for (Position bottom = position.Bottom;
+            for (Point bottom = position.Bottom;
                  Grid.GetValueAt(bottom.Bottom) == ']' && Grid.GetValueAt(bottom.Bottom.Right) == '[';
                  bottom = bottom.Bottom)
             {
@@ -166,7 +166,7 @@ public class Day15Part2(string input) : Day15(input)
                 return position;
             }
 
-            for (Position bottom = position.Bottom;
+            for (Point bottom = position.Bottom;
                  Grid.GetValueAt(bottom.Bottom) == '[' && Grid.GetValueAt(bottom.Bottom.Left) == ']';
                  bottom = bottom.Bottom)
             {
@@ -212,7 +212,7 @@ public class Day15Part2(string input) : Day15(input)
         return position.Bottom;
     }
 
-    private Position MoveLeft(Position position, char move)
+    private Point MoveLeft(Point position, char move)
     {
         if (Grid.GetValueAt(position.Left) == ']')
         {
@@ -234,7 +234,7 @@ public class Day15Part2(string input) : Day15(input)
         return position.Left;
     }
 
-    private Position MoveRight(Position position, char move)
+    private Point MoveRight(Point position, char move)
     {
         if (Grid.GetValueAt(position.Right) == '[')
         {

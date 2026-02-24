@@ -1,3 +1,4 @@
+using System.Drawing;
 using System.Text;
 
 namespace AdventOfCode2024;
@@ -6,7 +7,7 @@ public class Day15
 {
     private protected readonly char[,] Grid;
     private readonly Queue<char> _moves = [];
-    private Position _robotPosition = null!;
+    private Point _robotPosition;
 
     public IReadOnlyCollection<char> Moves => _moves;
 
@@ -28,7 +29,7 @@ public class Day15
 
                     if (line[j] == '@')
                     {
-                        _robotPosition = new Position(i, j);
+                        _robotPosition = new Point(i, j);
                     }
                 }
 
@@ -55,10 +56,10 @@ public class Day15
         Grid.SetValueAt(_robotPosition, '@');
     }
 
-    private protected virtual Position Move(Position position, char move)
+    private protected virtual Point Move(Point position, char move)
     {
-        Position next = null!;
-        Position nextNext = null!;
+        Point next = default;
+        Point nextNext = default;
 
         switch (move)
         {
