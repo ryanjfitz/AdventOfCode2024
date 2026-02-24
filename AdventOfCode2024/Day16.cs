@@ -18,18 +18,28 @@ public class Day16
 
     public Point[][] GetPaths()
     {
-        var paths = new HashSet<HashSet<Point>>(new PathEqualityComparer())
+        var paths = new HashSet<HashSet<Point>>(new PathEqualityComparer());
+
+        var forPartsPermutations =
+            new ForPart[]
+            {
+                new(p => p.Y <= _grid.GetUpperBound(1), (ref p) => p = p.Right),
+                new(p => p.Y >= _grid.GetLowerBound(1), (ref p) => p = p.Left),
+                new(p => p.X <= _grid.GetUpperBound(0), (ref p) => p = p.Bottom),
+                new(p => p.X >= _grid.GetLowerBound(0), (ref p) => p = p.Top)
+            }.GetPermutations();
+
+        foreach (var forParts in forPartsPermutations)
         {
-            GetPath(),
-            GetPath2()
-        };
+            paths.Add(GetPath(forParts));
+        }
 
         return paths.All(p => p.Count == 0)
             ? []
             : paths.Select(p => p.ToArray()).ToArray();
     }
 
-    private HashSet<Point> GetPath()
+    private HashSet<Point> GetPath(ForPart[] forParts)
     {
         _lastPosition = _startPosition;
 
@@ -41,51 +51,10 @@ public class Day16
         {
             lastPath = path.ToArray();
 
-            For(p => p.Y <= _grid.GetUpperBound(1), (ref p) => p = p.Right, path);
-
-            For(p => p.Y >= _grid.GetLowerBound(1), (ref p) => p = p.Left, path);
-
-            For(p => p.X <= _grid.GetUpperBound(0), (ref p) => p = p.Bottom, path);
-
-            For(p => p.X >= _grid.GetLowerBound(0), (ref p) => p = p.Top, path);
-        } while (!path.SetEquals(lastPath));
-
-        if (!path.Contains(_endPosition))
-        {
-            path.Clear();
-        }
-
-        for (int i = 0; i < path.Count - 1; i++)
-        {
-            if (!AreAdjacent(path.ElementAt(i), path.ElementAt(i + 1)))
+            foreach (var forPart in forParts)
             {
-                path.Clear();
-                break;
+                For(forPart.Condition, forPart.Iterator, path);
             }
-        }
-
-        return path;
-    }
-
-    private HashSet<Point> GetPath2()
-    {
-        _lastPosition = _startPosition;
-
-        var path = new HashSet<Point>();
-
-        Point[] lastPath;
-
-        do
-        {
-            lastPath = path.ToArray();
-
-            For(p => p.X >= _grid.GetLowerBound(0), (ref p) => p = p.Top, path);
-
-            For(p => p.X <= _grid.GetUpperBound(0), (ref p) => p = p.Bottom, path);
-
-            For(p => p.Y >= _grid.GetLowerBound(1), (ref p) => p = p.Left, path);
-
-            For(p => p.Y <= _grid.GetUpperBound(1), (ref p) => p = p.Right, path);
         } while (!path.SetEquals(lastPath));
 
         if (!path.Contains(_endPosition))
@@ -147,12 +116,14 @@ public class Day16
         return (startPosition, endPosition);
     }
 
-    private delegate void RefAction<T>(ref T param);
-
     private static bool AreAdjacent(Point a, Point b)
     {
         return a.Left == b || a.Right == b || a.Top == b || a.Bottom == b;
     }
+
+    private record ForPart(Func<Point, bool> Condition, RefAction<Point> Iterator);
+
+    private delegate void RefAction<T>(ref T param);
 
     private class PathEqualityComparer : IEqualityComparer<HashSet<Point>>
     {
